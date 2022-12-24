@@ -1,21 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Stack.hpp                                          :+:      :+:    :+:   */
+/*   ft_iterator.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: obeaj <obeaj@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/15 14:39:23 by obeaj             #+#    #+#             */
-/*   Updated: 2022/12/24 16:00:37 by obeaj            ###   ########.fr       */
+/*   Created: 2022/12/24 15:51:32 by obeaj             #+#    #+#             */
+/*   Updated: 2022/12/24 15:57:55 by obeaj            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef __STACK__HPP__
-#define __STACK__HPP__
+#ifndef FT_ITERATOR_HPP
+#define FT_ITERATOR_HPP
 
 namespace ft
 {
     
 }
 
-#endif  //!__STACK__HPP__
+#endif // !FT_ITERATOR_HPP
