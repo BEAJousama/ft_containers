@@ -6,7 +6,7 @@
 /*   By: obeaj <obeaj@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 13:58:46 by obeaj             #+#    #+#             */
-/*   Updated: 2022/12/25 13:03:29 by obeaj            ###   ########.fr       */
+/*   Updated: 2022/12/25 18:49:20 by obeaj            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,21 @@ int main ()
 
   typedef ft::iterator_traits<const int*> traits;
   if (typeid(traits::difference_type)==typeid(ptrdiff_t))
-    std::cout << "const int* is a random-access iterator";
+    std::cout << "const int* is a random-access iterator\n\n";
+
+  std::vector<int> vv;
+  for (int i=0; i<10; i++) vv.push_back(i);
+
+  ft::reverse_iterator<std::vector<int>::iterator> from,until;
+  from.base();
+  from = until + 100;
+  if (until < from)
+    std::cout << "until inferior than from\n";
+  else if (until > from)
+    std::cout << "until superior than from\n";
+  else if (until == from)
+    std::cout << "until equal from\n";
+    
+  std::cout << "myvector has " << (until-from) << " elements.\n";
   return 0;
 }
