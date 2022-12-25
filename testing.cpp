@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   testing.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: obeaj <obeaj@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 13:58:46 by obeaj             #+#    #+#             */
-/*   Updated: 2022/12/24 18:14:01 by obeaj            ###   ########.fr       */
+/*   Updated: 2022/12/25 13:03:29 by obeaj            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,5 +133,9 @@ int main ()
   std::cout << std::boolalpha;
   std::cout << "i is odd: " << is_odd(i) << std::endl;
   std::cout << "i is even: " << is_even(i) << std::endl;
+
+  typedef ft::iterator_traits<const int*> traits;
+  if (typeid(traits::difference_type)==typeid(ptrdiff_t))
+    std::cout << "const int* is a random-access iterator";
   return 0;
 }
