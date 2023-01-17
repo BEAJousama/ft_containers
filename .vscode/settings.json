@@ -1,0 +1,29 @@
+{
+    "files.associations": {
+        "__tree": "cpp",
+        "array": "cpp",
+        "*.tcc": "cpp",
+        "deque": "cpp",
+        "forward_list": "cpp",
+        "list": "cpp",
+        "string": "cpp",
+        "vector": "cpp",
+        "memory_resource": "cpp",
+        "string_view": "cpp",
+        "functional": "cpp",
+        "memory": "cpp",
+        "future": "cpp",
+        "tuple": "cpp",
+        "valarray": "cpp",
+        "__hash_table": "cpp",
+        "__locale": "cpp",
+        "__split_buffer": "cpp",
+        "hash_map": "cpp",
+        "locale": "cpp",
+        "map": "cpp",
+        "optional": "cpp",
+        "set": "cpp",
+        "thread": "cpp",
+        "unordered_map": "cpp"
+    }
+}
