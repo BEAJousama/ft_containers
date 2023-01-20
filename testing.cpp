@@ -6,7 +6,7 @@
 /*   By: obeaj <obeaj@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 13:58:46 by obeaj             #+#    #+#             */
-/*   Updated: 2023/01/14 16:05:56 by obeaj            ###   ########.fr       */
+/*   Updated: 2023/01/19 11:36:20 by obeaj            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,7 @@
 int main(int argc, const char** argv) {
     (void)argc;
     (void)argv;
-    std::vector<int> v (5,4);
-    // v.push_back(5);
+    std::vector<int> v (5,4);    // v.push_back(5);
     // std::vector<int>::iterator it;
 
     // for (it = v.begin() ; it != v.end(); it++) 

@@ -24,6 +24,11 @@
         "optional": "cpp",
         "set": "cpp",
         "thread": "cpp",
-        "unordered_map": "cpp"
+        "unordered_map": "cpp",
+        "iterator": "cpp",
+        "__node_handle": "cpp",
+        "bitset": "cpp",
+        "initializer_list": "cpp",
+        "__bit_reference": "cpp"
     }
 }
