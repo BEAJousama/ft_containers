@@ -6,7 +6,7 @@
 /*   By: obeaj <obeaj@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 13:58:46 by obeaj             #+#    #+#             */
-/*   Updated: 2023/01/19 11:36:20 by obeaj            ###   ########.fr       */
+/*   Updated: 2023/01/21 20:02:53 by obeaj            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,42 +20,20 @@
 int main(int argc, const char** argv) {
     (void)argc;
     (void)argv;
-    std::vector<int> v (5,4);    // v.push_back(5);
-    // std::vector<int>::iterator it;
-
-    // for (it = v.begin() ; it != v.end(); it++) 
-    // {
-    //     std::cout << *it << std::endl;
-    //     if (*it == 5)
-    //         v.push_back(-1);
-    // }
-    ft::vector<double> vv;
-    vv.push_back(3.0);
-    vv.push_back(8);
-    vv.push_back(8);
-    vv[0] = 888.0;
-    std::cout << vv[0] << std::endl;
-    vv.resize(0);
+    ft::vector<int> vv(5);
     std::cout << vv.size() << std::endl;
     std::cout << vv.capacity() << std::endl;
-    vv.push_back(3);
-    std::cout << vv.size() << std::endl;
-    v.push_back(122);
-    v.push_back(122);
-    v.push_back(122);
-    v.push_back(4);
-    std::cout << v.size() << std::endl;
-    std::cout << v.capacity() << std::endl;
-    v.pop_back();
-    v.pop_back();
-    v.pop_back();
-    std::cout << v.size() << std::endl;
-    std::cout << v.capacity() << std::endl;
-    v.push_back(155);
-    v.push_back(1999);
-    std::cout << v.size() << std::endl;
-    std::cout << v.capacity() << std::endl;
-    std::cout << v[4] << std::endl;
+    // vv.push_back(3.0);
+    // vv.push_back(8);
+    // vv.push_back(8);
+    vv[0] = 888;
+    std::cout << vv[0] << std::endl;
+    ft::vector<int> v(vv);
+    // vv.resize(0);
+    // std::cout << vv.size() << std::endl;
+    // std::cout << vv.capacity() << std::endl;
+    // // vv.push_back(3);
+    // std::cout << vv.size() << std::endl;
     
     
     return 0;
