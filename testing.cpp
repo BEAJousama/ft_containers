@@ -6,7 +6,7 @@
 /*   By: obeaj <obeaj@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 13:58:46 by obeaj             #+#    #+#             */
-/*   Updated: 2023/01/21 20:02:53 by obeaj            ###   ########.fr       */
+/*   Updated: 2023/01/24 20:33:52 by obeaj            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,23 +20,101 @@
 int main(int argc, const char** argv) {
     (void)argc;
     (void)argv;
-    ft::vector<int> vv(5);
-    std::cout << vv.size() << std::endl;
-    std::cout << vv.capacity() << std::endl;
+    // ft::vector<std::string> vec2(100, "55");
+    // ft::vector<int> vec1(100, 10);
+    // std::cout << vec1.size() << std::endl;
+    // std::cout << vec1.capacity() << std::endl;
     // vv.push_back(3.0);
     // vv.push_back(8);
     // vv.push_back(8);
-    vv[0] = 888;
-    std::cout << vv[0] << std::endl;
-    ft::vector<int> v(vv);
+    // vv.push_back(3.0);
+    // vv.push_back(8);
+    // vv.push_back(8);
+    // vv.push_back(8);
+    // vv.push_back(8);
+    // vv.push_back(8);
+    // vec2.at(0) = "888";
+    // std::cout << vec2[0] << std::endl;
+    // std::cout << vec2.size() << std::endl;
+    // vec2.pop_back();
+    // vec2.pop_back();
+    // vec2.pop_back();
+    // vec2.pop_back();
+    // vec2.pop_back();
+    // vec2.pop_back();
+    // vec2.pop_back();
+    // vec2.pop_back();
+    // vec2.pop_back();
+    // vec2.pop_back();
+    // std::cout << vec2.size() << std::endl;
+    // std::cout << vec2.capacity() << std::endl;
+    // std::cout << vec2.max_size() << std::endl;
+    ft::vector<int> vec9(5,12);
+    std::vector<int> vec8(3,130);
+    
+    // vec8.assign(-3, 12);
+    // std::vector<int>::iterator it = vec9.begin();
+    // vec9.assign(vec8.begin(), vec8.end());
+    vec9.assign(12, 111);
+    // while (it != vec9.end())
+    // {
+    //     std::cout << *it << std::endl;
+    //     it++;
+    // }
+    std::cout << vec9.size() << std::endl;
+    std::cout << vec9.capacity() << std::endl;
+    vec9.resize(3);
+    std::cout << vec9.size() << std::endl;
+    std::cout << vec9.capacity() << std::endl;
+    for(int i = 0; i < vec9.size(); i++)
+    std::cout << vec9[i] << std::endl;
+    std::vector<int> first;
+    ft::vector<int> second;
+    ft::vector<int> third;
+
+    first.assign (7,100);             // 7 ints with a value of 100
+
+    std::vector<int>::iterator it;
+    it=first.begin()+1;
+
+    second.assign (it,first.end()-1); // the 5 central values of first
+
+    int myints[] = {1776,7,4};
+    third.assign (myints,myints+3);   // assigning from array.
+
+    std::cout << "Size of first: " << int (first.size()) << '\n';
+    std::cout << "Size of second: " << int (second.size()) << '\n';
+    std::cout << "Size of third: " << int (third.size()) << '\n';
+
+    return 0;
+
+    // ft::vector<int> v(vv);
     // vv.resize(0);
     // std::cout << vv.size() << std::endl;
     // std::cout << vv.capacity() << std::endl;
     // // vv.push_back(3);
     // std::cout << vv.size() << std::endl;
-    
-    
-    return 0;
+    // std::vector<int> vec;
+    // vec.pop_back();
+    // std::cout << vec.size() << std::endl;
+    // ft::vector<int> vec5;
+    // vec5.pop_back();
+    // std::cout << vec5.size() << std::endl;
+
+    // std::cout << "********************************\n";
+    // vec5.front() = 22;
+    // std::cout << vec.size() << std::endl;
+    // std::cout << vec.max_size() << std::endl;
+    // vec1.reserve(300);
+    // std::cout << vec1.size() << std::endl;
+    // vec.at(vec.size() - 1) = 5556;
+    // std::cout << vec.back() << std::endl;
+    // vec1.back() = 333;
+    // std::cout << vec1.back() << std::endl;
+    // vec1.front() = 100021;
+    // std::cout << vec1.front() << std::endl;
+
+    // return 0;
 }
 
 // #include <utility>      // std::pair, std::make_pair
