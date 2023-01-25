@@ -6,7 +6,7 @@
 /*   By: obeaj <obeaj@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 15:51:11 by obeaj             #+#    #+#             */
-/*   Updated: 2022/12/24 18:11:29 by obeaj            ###   ########.fr       */
+/*   Updated: 2023/01/25 16:01:37 by obeaj            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,9 @@ namespace ft
 
     template<bool Cond, class T = void> struct enable_if {};
     template<class T> struct enable_if<true, T> { typedef T type; };
+
+    template <class T> struct  remove_const            {typedef T type;};
+    template <class T> struct  remove_const<const T>   {typedef T type;};
 }
 
 #endif // !FT_TYPE_TRAITS_HPP

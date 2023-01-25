@@ -6,7 +6,7 @@
 /*   By: obeaj <obeaj@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 13:58:46 by obeaj             #+#    #+#             */
-/*   Updated: 2023/01/24 20:33:52 by obeaj            ###   ########.fr       */
+/*   Updated: 2023/01/25 20:28:32 by obeaj            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,21 @@
 int main(int argc, const char** argv) {
     (void)argc;
     (void)argv;
+         ft::vector<int> myvector;
+
+  // set some values (from 1 to 10)
+        for (int i=1; i<=10; i++) myvector.push_back(i);
+
+        // erase the 6th element
+        myvector.erase (myvector.begin() + 5);
+
+        // erase the first 3 elements:
+        ft::vector<int>::iterator ii = myvector.erase (myvector.begin() ,myvector.begin() + 3);
+        std::cout << *ii << std::endl;
+        std::cout << "myvector contains:";
+        for (unsigned i=0; i<myvector.size(); ++i)
+            std::cout << ' ' << myvector[i];
+        std::cout << '\n';
     // ft::vector<std::string> vec2(100, "55");
     // ft::vector<int> vec1(100, 10);
     // std::cout << vec1.size() << std::endl;
@@ -49,6 +64,10 @@ int main(int argc, const char** argv) {
     // std::cout << vec2.size() << std::endl;
     // std::cout << vec2.capacity() << std::endl;
     // std::cout << vec2.max_size() << std::endl;
+    std::vector<int> test(5,3);
+    test[4] = 1888;
+    std::vector<int>::const_reverse_iterator itest = test.rend() - 1;
+    std::cout << *itest << std::endl;
     ft::vector<int> vec9(5,12);
     std::vector<int> vec8(3,130);
     
@@ -67,17 +86,17 @@ int main(int argc, const char** argv) {
     std::cout << vec9.size() << std::endl;
     std::cout << vec9.capacity() << std::endl;
     for(int i = 0; i < vec9.size(); i++)
-    std::cout << vec9[i] << std::endl;
-    std::vector<int> first;
+        std::cout << vec9[i] << std::endl;
+    ft::vector<int> first;
     ft::vector<int> second;
     ft::vector<int> third;
 
     first.assign (7,100);             // 7 ints with a value of 100
 
-    std::vector<int>::iterator it;
-    it=first.begin()+1;
+    ft::vector<int>::iterator it;
+    it=first.begin() + 1;
 
-    second.assign (it,first.end()-1); // the 5 central values of first
+    second.assign (it,first.end() - 1); // the 5 central values of first
 
     int myints[] = {1776,7,4};
     third.assign (myints,myints+3);   // assigning from array.

@@ -6,7 +6,7 @@
 /*   By: obeaj <obeaj@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 15:51:36 by obeaj             #+#    #+#             */
-/*   Updated: 2022/12/24 15:58:28 by obeaj            ###   ########.fr       */
+/*   Updated: 2023/01/25 13:47:04 by obeaj            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ namespace ft
         {
             std::cerr << e.what() << '\n';
         }
-        return (first2!=last2);
+        return (first2 != last2);
     };
     
     template <class T1, class T2, class Compare>
@@ -97,7 +97,8 @@ namespace ft
         {
             std::cerr << e.what() << '\n';
         }
-        return (first2!=last2);
+        // ATTENTION 
+        return (first2 != last2);
     };
 }
 
