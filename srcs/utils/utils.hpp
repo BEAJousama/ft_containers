@@ -6,7 +6,7 @@
 /*   By: obeaj <obeaj@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 10:41:43 by obeaj             #+#    #+#             */
-/*   Updated: 2023/01/21 10:58:09 by obeaj            ###   ########.fr       */
+/*   Updated: 2023/01/27 18:23:57 by obeaj            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ namespace ft
     void operator&() const;    /* Can't take address of nullptr */
 
     } t_nullptr = {};               /* and whose name is nullptr     */
+    
 };
 
 #endif //UTILS_HPP

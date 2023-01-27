@@ -6,7 +6,7 @@
 /*   By: obeaj <obeaj@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 14:39:32 by obeaj             #+#    #+#             */
-/*   Updated: 2023/01/25 20:45:45 by obeaj            ###   ########.fr       */
+/*   Updated: 2023/01/27 18:37:40 by obeaj            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #define __VECTOR__H__
 
 #include "../utils/utils.hpp"
+#include <memory>
+#include <iostream>
 
 namespace ft
 {
@@ -26,7 +28,7 @@ namespace ft
             typedef typename allocator_type::reference       			reference;
             typedef typename allocator_type::const_reference 			const_reference;
             typedef ft::random_access_iterator<T>            			iterator;
-            typedef ft::random_access_iterator<const T>     	const_iterator;
+            typedef ft::random_access_iterator<const T>     			const_iterator;
             typedef typename allocator_type::difference_type 			difference_type;
             typedef typename allocator_type::size_type       			size_type;
             typedef typename allocator_type::pointer         			pointer;
@@ -35,10 +37,10 @@ namespace ft
             typedef ft::reverse_iterator<const_iterator>    			const_reverse_iterator;
 			
         private:
-            allocator_type  v_alloc;
             pointer         v_start;
             size_type       v_size ;
             size_type       v_capacity;
+            allocator_type  v_alloc;
 		
 		private:
 			
@@ -130,7 +132,7 @@ namespace ft
             // Range iterator
             template <class InputIterator> 
             vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(),
-				typename enable_if<!is_integral<InputIterator>::value>::type* = 0)
+				typename enable_if<!is_integral<InputIterator>::value>::type* = 0) : v_alloc(alloc)
             {
 				if (first > last)
 					std::__throw_length_error("vector");
@@ -202,8 +204,8 @@ namespace ft
 			
 			void resize (size_type n, value_type val = value_type())
             {
-                if (static_cast<int>(n) < 0)
-                    std::__throw_length_error("vector");
+				if (n  > max_size() || static_cast<int>(n) < 0)
+					std::__throw_length_error("vector");
 				if ( n > v_capacity )
 					reallocate(n);
 				if ( n > v_size )
@@ -234,6 +236,8 @@ namespace ft
 			
             void reserve (size_type n)
             {
+				if (n  > max_size())
+					std::__throw_length_error("vector");
                 if (n > v_capacity)
 					reallocate(n);
             };
@@ -308,8 +312,7 @@ namespace ft
 				if(first > last)
 					throw std::logic_error("vector");
 				clear();
-				difference_type diff = last - first;
-				InputIterator next = first;
+				size_type diff = static_cast<size_type>(last - first);
 				if (diff > v_capacity)
 				{
 					pointer v_start_new = v_alloc.allocate(diff);
@@ -383,7 +386,7 @@ namespace ft
             {
 				if (static_cast<int>(v_size) > 0)
 				{
-					for (size_type i = 0;   i < v_size; i++)
+					for (size_type i = 0; i < v_size; i++)
 						v_alloc.destroy(v_start + i);
 				}
             };
@@ -833,19 +836,19 @@ template< typename L>class RandomAccessIterator
 		iterator insert (iterator position, const value_type& val){
 			if (position < begin() || position > end())
 				throw std::logic_error("vector");
-			difference_type start = position - begin();
+			difference_type diff = position - begin();
 			if (v_size == v_capacity){
 				v_capacity = v_capacity * 2 + (v_capacity == 0);
-				pointer new_arr = v_alloc.allocate(v_capacity);
-				std::uninitialized_copy(begin(), position, iterator(new_arr));
-				v_alloc.construct(new_arr + start, val);
-				std::uninitialized_copy(position, end(), iterator(new_arr + start + 1));
+				pointer v_start_new = v_alloc.allocate(v_capacity);
+				std::uninitialized_copy(begin(), position, iterator(v_start_new));
+				v_alloc.construct(v_start_new + start, val);
+				std::uninitialized_copy(position, end(), iterator(v_start_new + start + 1));
 				for (size_t i = 0; i < v_size; i++)
 					v_alloc.destroy(v_start + i);
 				if(v_size)
 					v_alloc.deallocate(v_start, v_size);
 				v_size++;
-				v_start = new_arr;
+				v_start = v_start_new;
 			}
 			else {
 				for (size_type i = v_size; i > static_cast<size_type>(start); i--){
@@ -868,17 +871,17 @@ template< typename L>class RandomAccessIterator
 			difference_type start = position - begin();
 			if (v_size + n > v_capacity){
 				size_type new_cap = v_capacity * 2 >= v_size + n ? v_capacity * 2 : v_size + n;
-				pointer new_arr = v_alloc.allocate(new_cap);
-				std::uninitialized_copy(begin(), position, iterator(new_arr));
+				pointer v_start_new = v_alloc.allocate(new_cap);
+				std::uninitialized_copy(begin(), position, iterator(v_start_new));
 				for (size_type i = 0; i < n; i++)
-					v_alloc.construct(new_arr + start + i, val);
-				std::uninitialized_copy(position, end(), iterator(new_arr + start + n));
+					v_alloc.construct(v_start_new + start + i, val);
+				std::uninitialized_copy(position, end(), iterator(v_start_new + start + n));
 				for (size_type i = 0; i < v_size; i++)
 					v_alloc.destroy(v_start + i);
 				v_alloc.deallocate(v_start, v_capacity);
 				v_size += n;
 				v_capacity = new_cap;
-				v_start = new_arr;
+				v_start = v_start_new;
 			}
 			else {
 				for (size_type i = v_size; i > static_cast<size_type>(start); i--) {
@@ -903,25 +906,25 @@ template< typename L>class RandomAccessIterator
 			size_type count = static_cast<size_type>(last - first);
 			if (v_size + count > v_capacity) {
 				size_type new_cap = v_capacity * 2 >= v_size + count ? v_capacity * 2 : v_size + count;
-				pointer new_arr = v_alloc.allocate(new_cap);
-				std::uninitialized_copy(begin(), position, iterator(new_arr));
+				pointer v_start_new = v_alloc.allocate(new_cap);
+				std::uninitialized_copy(begin(), position, iterator(v_start_new));
 				try {
 					for (size_type i = 0; i < static_cast<size_type>(count); i++, first++)
-						v_alloc.construct(new_arr + start + i, *first);
+						v_alloc.construct(v_start_new + start + i, *first);
 				}
 				catch (...){
 					for (size_type i = 0; i < count + start; ++i)
-						v_alloc.destroy(new_arr + i);
-					v_alloc.deallocate(new_arr, new_cap);
+						v_alloc.destroy(v_start_new + i);
+					v_alloc.deallocate(v_start_new, new_cap);
 					throw;
 				}
-				std::uninitialized_copy(position, end(), iterator(new_arr + start + count));
+				std::uninitialized_copy(position, end(), iterator(v_start_new + start + count));
 				for (size_type i = 0; i < v_size; i++)
 					v_alloc.destroy(v_start + i);
 				v_alloc.deallocate(v_start, v_capacity);
 				v_size += count;
 				v_capacity = new_cap;
-				v_start = new_arr;
+				v_start = v_start_new;
 			}
 			else {
 				for (size_type i = v_size; i > static_cast<size_type>(start); i--) {
@@ -941,17 +944,17 @@ template< typename L>class RandomAccessIterator
 //				difference_type count = last - first;
 //				if (v_size + count > v_capacity){
 //					size_type new_cap = v_capacity * 2 >= v_size + count ? v_capacity * 2 : v_size + count;
-//					pointer new_arr = v_alloc.allocate(new_cap);
-//					std::uninitialized_copy(begin(), position, iterator(new_arr));
+//					pointer v_start_new = v_alloc.allocate(new_cap);
+//					std::uninitialized_copy(begin(), position, iterator(v_start_new));
 //					for (size_type i = 0; i < count; i++, first++)
-//						v_alloc.construct(new_arr + start + i, *first);
-//					std::uninitialized_copy(position, end(), iterator(new_arr + start + count));
+//						v_alloc.construct(v_start_new + start + i, *first);
+//					std::uninitialized_copy(position, end(), iterator(v_start_new + start + count));
 //					for (size_type i = 0; i < v_size; i++)
 //						v_alloc.destroy(v_start + i);
 //					v_alloc.deallocate(v_start, v_capacity);
 //					v_size += count;
 //					v_capacity = new_cap;
-//					v_start = new_arr;
+//					v_start = v_start_new;
 //				}
 //				else{
 //					for (size_type i = v_size; i > start; i--){

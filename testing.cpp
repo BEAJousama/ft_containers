@@ -6,7 +6,7 @@
 /*   By: obeaj <obeaj@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 13:58:46 by obeaj             #+#    #+#             */
-/*   Updated: 2023/01/25 20:28:32 by obeaj            ###   ########.fr       */
+/*   Updated: 2023/01/27 18:41:39 by obeaj            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,59 +20,72 @@
 int main(int argc, const char** argv) {
     (void)argc;
     (void)argv;
+
+  //       ft::vector<int> myvector (3,100);
+  //       ft::vector<int>::iterator it;
+
+  // it = myvector.begin();
+  // it = myvector.insert ( it , 200 );
+
+  // myvector.insert (it,2,300);
+
+  // // "it" no longer valid, get a new one:
+  // it = myvector.begin();
+
+  //   ft::vector<int> anothervector (2,400);
+  // myvector.insert (it+2,anothervector.begin(),anothervector.end());
+
+  // int myarray [] = { 501,502,503 };
+  // myvector.insert (myvector.begin(), myarray, myarray+3);
+
+  // std::cout << "myvector contains:";
+  // for (it=myvector.begin(); it<myvector.end(); it++)
+  //   std::cout << ' ' << *it;
+  // std::cout << '\n';
          ft::vector<int> myvector;
 
   // set some values (from 1 to 10)
-        for (int i=1; i<=10; i++) myvector.push_back(i);
+  for (int i=1; i<=10; i++) myvector.push_back(i);
 
         // erase the 6th element
         myvector.erase (myvector.begin() + 5);
 
         // erase the first 3 elements:
-        ft::vector<int>::iterator ii = myvector.erase (myvector.begin() ,myvector.begin() + 3);
+        ft::vector<int>::iterator ii = myvector.erase (myvector.begin(), myvector.begin() + 3);
         std::cout << *ii << std::endl;
         std::cout << "myvector contains:";
         for (unsigned i=0; i<myvector.size(); ++i)
             std::cout << ' ' << myvector[i];
         std::cout << '\n';
-    // ft::vector<std::string> vec2(100, "55");
-    // ft::vector<int> vec1(100, 10);
-    // std::cout << vec1.size() << std::endl;
-    // std::cout << vec1.capacity() << std::endl;
-    // vv.push_back(3.0);
-    // vv.push_back(8);
-    // vv.push_back(8);
-    // vv.push_back(3.0);
-    // vv.push_back(8);
-    // vv.push_back(8);
-    // vv.push_back(8);
-    // vv.push_back(8);
-    // vv.push_back(8);
-    // vec2.at(0) = "888";
-    // std::cout << vec2[0] << std::endl;
-    // std::cout << vec2.size() << std::endl;
-    // vec2.pop_back();
-    // vec2.pop_back();
-    // vec2.pop_back();
-    // vec2.pop_back();
-    // vec2.pop_back();
-    // vec2.pop_back();
-    // vec2.pop_back();
-    // vec2.pop_back();
-    // vec2.pop_back();
-    // vec2.pop_back();
-    // std::cout << vec2.size() << std::endl;
-    // std::cout << vec2.capacity() << std::endl;
-    // std::cout << vec2.max_size() << std::endl;
-    std::vector<int> test(5,3);
+    ft::vector<std::string> vec2(100, "55");
+    ft::vector<int> vec1(100, 10);
+    std::cout << vec1.size() << std::endl;
+    std::cout << vec1.capacity() << std::endl;
+    vec2.at(0) = "888";
+    std::cout << vec2[0] << std::endl;
+    std::cout << vec2.size() << std::endl;
+    vec2.pop_back();
+    vec2.pop_back();
+    vec2.pop_back();
+    vec2.pop_back();
+    vec2.pop_back();
+    vec2.pop_back();
+    vec2.pop_back();
+    vec2.pop_back();
+    vec2.pop_back();
+    vec2.pop_back();
+    std::cout << vec2.size() << std::endl;
+    std::cout << vec2.capacity() << std::endl;
+    std::cout << vec2.max_size() << std::endl;
+    ft::vector<int> test(5,3);
     test[4] = 1888;
-    std::vector<int>::const_reverse_iterator itest = test.rend() - 1;
+    ft::vector<int>::const_reverse_iterator itest = test.rend() - 1;
     std::cout << *itest << std::endl;
     ft::vector<int> vec9(5,12);
-    std::vector<int> vec8(3,130);
+    ft::vector<int> vec8(3,130);
     
     // vec8.assign(-3, 12);
-    // std::vector<int>::iterator it = vec9.begin();
+    // ft::vector<int>::iterator it = vec9.begin();
     // vec9.assign(vec8.begin(), vec8.end());
     vec9.assign(12, 111);
     // while (it != vec9.end())
@@ -85,7 +98,7 @@ int main(int argc, const char** argv) {
     vec9.resize(3);
     std::cout << vec9.size() << std::endl;
     std::cout << vec9.capacity() << std::endl;
-    for(int i = 0; i < vec9.size(); i++)
+    for(int i = 0; i < (int)vec9.size(); i++)
         std::cout << vec9[i] << std::endl;
     ft::vector<int> first;
     ft::vector<int> second;
@@ -113,7 +126,7 @@ int main(int argc, const char** argv) {
     // std::cout << vv.capacity() << std::endl;
     // // vv.push_back(3);
     // std::cout << vv.size() << std::endl;
-    // std::vector<int> vec;
+    // ft::vector<int> vec;
     // vec.pop_back();
     // std::cout << vec.size() << std::endl;
     // ft::vector<int> vec5;
@@ -179,7 +192,7 @@ int main(int argc, const char** argv) {
 //   std::cout << "The price of " << product2.first << " is $" << product2.second << '\n';
 //   std::cout << "The price of " << product3.first << " is $" << product3.second << '\n';
 //     int myints[] = {20,40,60,80,100};               //   myints: 20 40 60 80 100
-//   std::vector<int>myvector (myints,myints+5);     // myvector: 20 40 60 80 100
+//   ft::vector<int>myvector (myints,myints+5);     // myvector: 20 40 60 80 100
 
 //   // using default comparison:
 //   if ( ft::equal (myvector.begin(), myvector.end(), myints) )
@@ -228,10 +241,10 @@ int main(int argc, const char** argv) {
 //   if (typeid(traits::difference_type)==typeid(ptrdiff_t))
 //     std::cout << "const int* is a random-access iterator\n\n";
 
-//   std::vector<int> vv;
+//   ft::vector<int> vv;
 //   for (int i=0; i<10; i++) vv.push_back(i);
 
-//   ft::reverse_iterator<std::vector<int>::iterator> from,until;
+//   ft::reverse_iterator<ft::vector<int>::iterator> from,until;
 //   from.base();
 //   from = until + 100;
 //   if (until < from)
