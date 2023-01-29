@@ -6,18 +6,13 @@
 /*   By: obeaj <obeaj@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 10:41:43 by obeaj             #+#    #+#             */
-/*   Updated: 2023/01/27 18:23:57 by obeaj            ###   ########.fr       */
+/*   Updated: 2023/01/28 14:40:17 by obeaj            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef UTILS_HPP
 #define UTILS_HPP
 
-#include "ft_algorithm.hpp"
-#include "ft_iterator.hpp"
-#include "ft_utility.hpp"
-#include "ft_type_traits.hpp"
-#include "ft_random_access_iterator.hpp"
 
 namespace ft
 {

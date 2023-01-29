@@ -6,7 +6,7 @@
 /*   By: obeaj <obeaj@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 13:58:46 by obeaj             #+#    #+#             */
-/*   Updated: 2023/01/27 18:41:39 by obeaj            ###   ########.fr       */
+/*   Updated: 2023/01/29 21:00:44 by obeaj            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,24 @@ int main(int argc, const char** argv) {
     std::cout << "Size of first: " << int (first.size()) << '\n';
     std::cout << "Size of second: " << int (second.size()) << '\n';
     std::cout << "Size of third: " << int (third.size()) << '\n';
+
+    ft::vector<int> ob(5, 22);
+    
+    ft::vector<int>::iterator oit = ob.begin();
+    ft::vector<int>::iterator oitt = ob.end();
+    ft::vector<int> obb(10, 13);
+    obb.reserve(15);
+    
+    std::cout << obb.size() << '\n';
+    std::cout << obb.capacity() << '\n';
+    obb.insert(obb.end() - 5, 4, 12);
+    std::cout << obb.size() << '\n';
+    std::cout << obb.capacity() << '\n';
+
+    for (size_t i = 0; i < obb.size(); i++)
+    {
+        std::cout << obb[i] << '\n';
+    }
 
     return 0;
 
