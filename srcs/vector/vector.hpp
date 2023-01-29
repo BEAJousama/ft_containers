@@ -6,7 +6,7 @@
 /*   By: obeaj <obeaj@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 14:39:32 by obeaj             #+#    #+#             */
-/*   Updated: 2023/01/29 21:30:24 by obeaj            ###   ########.fr       */
+/*   Updated: 2023/01/30 00:18:23 by obeaj            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ namespace ft
             v_capacity(0), 
             v_alloc(alloc) 
             {
-            }
+            };
 
             //fill
             explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) : 
@@ -107,7 +107,7 @@ namespace ft
                 v_start = v_alloc.allocate(n);
                 for(size_type i = 0; i < n; i++)
                     v_alloc.construct(v_start + i, val);
-            }
+            };
 
             //OPERATOR=
             vector& operator= (const vector& x){
@@ -125,12 +125,12 @@ namespace ft
                 for (size_type i = 0; i < v_size; i++)
                     v_alloc.construct(v_start + i, x[i]);
                 return *this;
-            }
+            };
 
             //copy
             vector (const vector& x) :  v_size(0), v_capacity(0){
                 *this = x;
-            }
+            };
 
             // Range iterator
             template <class InputIterator> 
@@ -505,7 +505,7 @@ namespace ft
 				v_size--;
 				v_alloc.destroy(v_start + v_size - 1);
 				return iterator(v_start + diff);
-			}
+			};
 
 			iterator erase (iterator first, iterator last){
 				difference_type __start = first - begin();
@@ -605,6 +605,6 @@ namespace ft
 		x.swap(y);
 	};
     
-}
+};
 
 #endif
