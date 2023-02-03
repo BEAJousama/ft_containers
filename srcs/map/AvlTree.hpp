@@ -6,24 +6,95 @@
 /*   By: obeaj <obeaj@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 18:18:52 by obeaj             #+#    #+#             */
-/*   Updated: 2023/02/02 13:19:08 by obeaj            ###   ########.fr       */
+/*   Updated: 2023/02/03 12:15:34 by obeaj            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __AVLTREE__H__
 #define __AVLTREE__H__
 
-struct avl {
-   int d;
-   struct avl *l;
-   struct avl *r;
-}*r;
+#include "../utils/utils.hpp"
 
-template <class _Tv, class T_C, class Alloc > class AvlTree
+template <typename T>
+    struct avl_node
 {
+    public :
+
+        typedef T   value_type;
+
+        value_type value;
+        avl_node* parent;
+        avl_node* left;
+        avl_node* right;
+
+        avl_node ()
+        :
+            value(),
+            parent(t_nullptr),
+            left(t_nullptr),
+            right(t_nullptr)
+        {}
+
+
+        avl_node (avl_node* parent = t_nullptr,
+                avl_node* left = t_nullptr, avl_node* right = t_nullptr)
+        :
+            value(),
+            parent(parent),
+            left(left),
+            right(right)
+        {}
+        
+        avl_node (const value_type& val, avl_node* parent = t_nullptr,
+                avl_node* left = t_nullptr, avl_node* right = t_nullptr)
+        :
+            value(val),
+            parent(parent),
+            left(left),
+            right(right)
+        {}
+
+        avl_node (const avl_node& nd)
+        :
+            value(nd.value),
+            parent(nd.parent),
+            left(nd.left),
+            right(nd.right)
+        {}
+
+        virtual ~avl_node() {}
+        
+        avl_node &operator=(const avl_node& nd)
+        {
+            if (nd == *this)
+                return (*this);
+            
+            this->value = nd.value;
+            this->parent = nd.parent;
+            this->left = nd.left;
+            this->right = nd.right;
+            
+            return (*this);
+        }
+
+        bool operator==(const avl_node& nd)
+        {
+            if (value == nd.value)
+                return (true);
+            return (false);
+        }
+};
+
+template <class T, class Compare, class Alloc, class Node = avl_node<T>, typename AllocNode = std::allocator<Node> > class AvlTree
+{
+    public:
+        typedef T           value_type;
+        typedef Compare     compare_type;
+        typedef Alloc       alloc_type;
+        typedef Node        node;
+        typedef AllocNode   alloc_node;
     private:
-        AvlTree *right;
-        AvlTree *left;
+        AvlTree tree;
         
 };
 #endif  //!__AVLTREE__H__
