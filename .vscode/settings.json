@@ -98,6 +98,7 @@
         "typeindex": "cpp",
         "variant": "cpp",
         "__bits": "cpp",
-        "queue": "cpp"
+        "queue": "cpp",
+        "__functional_base_03": "cpp"
     }
 }

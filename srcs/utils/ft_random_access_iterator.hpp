@@ -6,7 +6,7 @@
 /*   By: obeaj <obeaj@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 10:41:25 by obeaj             #+#    #+#             */
-/*   Updated: 2023/01/25 20:27:45 by obeaj            ###   ########.fr       */
+/*   Updated: 2023/02/06 16:33:05 by obeaj            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,10 @@ namespace ft
             typedef typename ft::iterator_traits<T*>::reference             reference;
         private:
             pointer m_ptr;
-
-        private:
-            bool compatible(self_type const & other) const
-            {
-                return m_ptr == other.m_ptr;
-            };
             
         public:
         // ATTENTION : use t_null ptr : resolve double include
-        random_access_iterator() : m_ptr(NULL){};
+        random_access_iterator() : m_ptr(t_nullptr){};
         
         explicit random_access_iterator(pointer ptr) : m_ptr(ptr){};
                 
