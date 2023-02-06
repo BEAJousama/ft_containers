@@ -6,7 +6,7 @@
 /*   By: obeaj <obeaj@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 18:18:52 by obeaj             #+#    #+#             */
-/*   Updated: 2023/02/03 12:15:34 by obeaj            ###   ########.fr       */
+/*   Updated: 2023/02/06 10:56:52 by obeaj            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,9 +92,74 @@ template <class T, class Compare, class Alloc, class Node = avl_node<T>, typenam
         typedef Compare     compare_type;
         typedef Alloc       alloc_type;
         typedef Node        node;
+        typedef Node*       node_pointer;
         typedef AllocNode   alloc_node;
     private:
-        AvlTree tree;
+        node_pointer tree;
+        node_alloc av_alloc;
+
+    public:
+
+        AvlTree(const node_alloc& alloc = node_alloc()):av_alloc(alloc)
+        {
+            tree = av_alloc.allocate(1);
+            av_alloc.allocate(tree,node(tree,tree,tree));
+        }
+        ~AvlTree()
+        {
+        }
+        
+        node_pointer rrrotation(node_pointer torotate)
+        {
+            node_pointer p;
+            node_pointer tp;
+            p = torotate;
+            tp = p->right;
+
+            p->right = tp->left;
+            tp->left = p;
+
+            return tp; 
+        }
+        
+        node_pointer llrotation(node_pointer torotate)
+        {
+            node_pointer p;
+            node_pointer tp;
+            p = torotate;
+            tp = p->left;
+
+            p->left = tp->right;
+            tp->right = p;
+
+            return tp; 
+        }
+        
+        node_pointer lrrotation(node_pointer torotate)
+        {
+            node_pointer p;
+            node_pointer tp;
+            p = torotate;
+            tp = p->left;
+            
+            p->left = tp->right;
+            tp->right->left = tp->parent;
+            p = llrotate(p);
+        }
+
+        node_pointer rlrotation(node_pointer torotate)
+        {
+            node_pointer p;
+            node_pointer tp;
+            p = torotate;
+            tp = p->right;
+            
+            p->right = tp->left;
+            tp->left->right = tp->parent;
+            p = rrrotate(p);
+        }
+
+        
         
 };
 #endif  //!__AVLTREE__H__
