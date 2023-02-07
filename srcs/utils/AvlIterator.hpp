@@ -6,7 +6,7 @@
 /*   By: obeaj <obeaj@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 13:33:54 by obeaj             #+#    #+#             */
-/*   Updated: 2023/02/06 18:21:37 by obeaj            ###   ########.fr       */
+/*   Updated: 2023/02/07 16:20:17 by obeaj            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,17 @@
 #include "./ft_iterator.hpp"
 namespace ft
 {
-    template <class NodePointer, class Reference>
+    template <class NodePointer, class Reference, class Pointer, class Compare>
     class AvlIterator : ft::iterator<ft::bidirectional_iterator_tag, NodePointer>
     {
         public:
             typedef          AvlIterator                                    self_type;
             typedef          NodePointer                                    node_pointer;
             typedef          Reference                                      reference;
+            typedef          Pointer                                        pointer;
+            typedef          Compare                                        compare_type;
         private:
+            compare_type compare;
             node_pointer m_ptr;
 
         public:
@@ -41,6 +44,7 @@ namespace ft
         
         ~AvlIterator() {};
         
+        //ATTENTION:  -- and ++ to be updated using compare_type
         self_type & operator++ ()
         {
             if (m_ptr->right != t_nullptr)
@@ -86,7 +90,6 @@ namespace ft
                 }
             }
             return *this;
-            return *this;
         };
         
         self_type operator-- (int)
@@ -108,12 +111,12 @@ namespace ft
         
         reference operator* () const
         {
-            return *(m_ptr->value);
+            return m_ptr->value;
         };
 
-        reference operator-> () const
+        pointer operator-> () const
         {
-            return m_ptr->value;
+            return &(m_ptr->value);
         };
     };
 };
