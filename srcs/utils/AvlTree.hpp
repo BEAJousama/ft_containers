@@ -6,7 +6,7 @@
 /*   By: obeaj <obeaj@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 18:18:52 by obeaj             #+#    #+#             */
-/*   Updated: 2023/02/07 18:24:55 by obeaj            ###   ########.fr       */
+/*   Updated: 2023/02/08 17:28:47 by obeaj            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 #define __AVLTREE__H__
 
 #include "./utils.hpp"
-#include "./AvlIterator.hpp"
+#include "./ft_type_traits.hpp"
+// #include "./AvlIterator.hpp"
 #include <iostream>
 
 namespace ft{
@@ -26,72 +27,14 @@ namespace ft{
             typedef T   value_type;
 
             value_type  value;
-            size_t      bf;
+            int         height;
             avl_node*   parent;
             avl_node*   left;
             avl_node*   right;
 
-            avl_node ()
-            :
-                value(),
-                parent(t_nullptr),
-                left(t_nullptr),
-                right(t_nullptr),
-                bf(0)
-            {}
-
-
-            avl_node (avl_node* parent = t_nullptr,
-                    avl_node* left = t_nullptr, avl_node* right = t_nullptr)
-            :
-                value(),
-                parent(parent),
-                left(left),
-                right(right),
-                bf(0)
-            {}
-            
-            avl_node (const value_type& val, avl_node* parent = t_nullptr,
-                    avl_node* left = t_nullptr, avl_node* right = t_nullptr)
-            :
-                value(val),
-                parent(parent),
-                left(left),
-                right(right),
-                bf(0)
-            {}
-
-            avl_node (const avl_node& nd)
-            :
-                value(nd.value),
-                parent(nd.parent),
-                left(nd.left),
-                right(nd.right)
-                bf(nd.bf)
-            {}
-
-            virtual ~avl_node() {}
-            
-            avl_node &operator=(const avl_node& nd)
-            {
-                if (nd == *this)
-                    return (*this);
-                
-                this->value = nd.value;
-                this->parent = nd.parent;
-                this->left = nd.left;
-                this->right = nd.right;
-                this->bf = nd.bf;
-                
-                return (*this);
-            }
-
-            bool operator==(const avl_node& nd)
-            {
-                if (value == nd.value)
-                    return (true);
-                return (false);
-            }
+ 		public:
+			avl_node(): key() {};
+			avl_node(value_type key): key(key){};
     };
 
     template <class T, class Compare, class Alloc, class Node = avl_node<T>, typename AllocNode = std::allocator<Node> > class AvlTree
@@ -116,142 +59,248 @@ namespace ft{
             typedef const Node*                             const_node_pointer;
         
         public:
-            typedef AvlIterator<node_pointer, reference, pointer, compare_type>         iterator;
-            typedef AvlIterator<const_node_pointer, reference, pointer, compare_type>   const_iterator;
-            typedef ft::reverse_iterator<iterator>                                      reverse_iterator;
-            typedef ft::reverse_iterator<const_iterator>                                const_reverse_iterator;
+            // typedef AvlIterator<node_pointer, reference, pointer, compare_type>         iterator;
+            // typedef AvlIterator<const_node_pointer, reference, pointer, compare_type>   const_iterator;
+            // typedef ft::reverse_iterator<iterator>                                      reverse_iterator;
+            // typedef ft::reverse_iterator<const_iterator>                                const_reverse_iterator;
         
         private:
-            node_pointer    tree;
-            node_pointer    root;
+            node_pointer    _end;
+            node_pointer    _root;
             alloc_node      av_alloc;
-            size_type       _size;        
-        public:
-            AvlTree(const node_alloc& alloc = node_alloc()):av_alloc(alloc)
+            size_type       _size;
+
+        private:
+
+            node_pointer createNode(value_type key)
+			{
+				node_pointer newnode = av_alloc.allocate(1);
+				this->_alloc.construct(newnode, key);
+				newnode->height = 1;
+				newnode->parent = nullptr;
+				newnode->left = nullptr;
+				newnode->right = nullptr;
+				return (newnode);
+			};
+
+            void updateHeight(node_pointer node)
             {
-                tree = av_alloc.allocate(1);
-                av_alloc.allocate(tree,node(tree,tree,tree));
-                root = tree;
+                node->height = 1 + std::max(getHeight(node->left), getHeight(node->right));
+            };
+
+            int getHeight(node_pointer node) {
+                if (node == t_nullptr) {
+                    return 0;
+                }
+                return node->height;
+            };
+
+            int getBalance(node_pointer node) {
+                if (node == t_nullptr)
+                    return 0;
+                return getHeight(node->left) - getHeight(node->right);
+            };
+
+            node_pointer rightRotate(node_pointer x) {
+                node_pointer y = x->left;
+                node_pointer tmp = y->right;
+                node_pointer ptmp = x->parent;
+
+                y->right = x;
+                x->left = tmp;
+
+                if (ptmp != _end && ptmp->left = x)
+                    ptmp->left = y;
+                else if (ptmp != _end && ptmp->right = x)
+                    ptmp->right = y
+                y->parent = x->parent;
+                x->parent = y;
+
+                if (tmp != nullptr)
+                    tmp->parent = x;
+                updateHeight(x);
+                updateHeight(y);
+                return y;
+            };
+
+            node_pointer leftRotate(node_pointer x) 
+            {
+                node_pointer y = x->right;
+                node_pointer tmp = y->left;
+                node_pointer ptmp = x->parent;
+
+                y->left = x;
+                x->right = tmp;
+
+                if (ptmp != _end && ptmp->left = x)
+                    ptmp->left = y;
+                else if (ptmp != _end && ptmp->right = x)
+                    ptmp->right = y
+                y->parent = x->parent;
+                x->parent = y;
+
+                if (tmp != nullptr)
+                    tmp->parent = x;
+                updateHeight(x);
+                updateHeight(y);
+                return y;
+            };
+
+            node_pointer RightLeftRotate(node_pointer node)
+			{
+				node->right = _rightRotate(node->right);
+				return (leftRotate(node));
+			};
+
+			node_pointer LeftRightRotate(node_pointer node)
+			{
+				node->left = leftRotate(node->left);
+				return (rightRotate(node));
+			};
+
+			void    destructNode(node_pointer node)
+			{
+				if (node != nullptr)
+				{
+					destructNode(node->left);
+					destructNode(node->right);
+					av_alloc.destroy(node);
+					av_alloc.deallocate(node, 1);
+				}
+			};
+
+            node_pointer balanceNode(node_pointer node)
+			{
+				int	balanceFactor = getBalance(node);
+				if (balanceFactor > 1)
+				{
+					if (getBalance(node->left) >= 0)
+						return (rightRotate(node));
+					else
+						return (LeftRightRotate(node));
+				}
+				else if (balanceFactor < -1)
+				{
+					if (getBalance(node->right) <= 0)
+						return (leftRotate(node));
+					else
+						return (RightLeftRotate(node));
+				}
+				return (node);
+			};
+
+
+
+
+        public:
+            AvlTree(const alloc_node& alloc = alloc_node()):av_alloc(alloc)
+            {
+                _end = createNode(value_type());
+                _root = _end;
+                _size = 0;
             }
             ~AvlTree()
             {
                 
             }
         public:
-            node_pointer rrrotation(node_pointer torotate)
-            {
-                node_pointer p;
-                node_pointer tp;
-                p = torotate;
-                tp = p->right;
 
-                p->right = tp->left;
-                tp->left = p;
+            // node_pointer insert(node_pointer nd, value_type &val) {
 
-                return tp; 
-            }
-            
-            node_pointer llrotation(node_pointer torotate)
-            {
-                node_pointer p;
-                node_pointer tp;
-                p = torotate;
-                tp = p->left;
+            //     if (nd == tree)
+            //     {
+            //         tree -> value = val;
+            //         tree ->left = t_nullptr;
+            //         tree ->right = t_nullptr;
+            //         return tree;
+            //     }
+            //     if (nd == t_nullptr)
+            //     {
+            //         node_pointer newnode;
+            //         newnode = av_alloc.allocate(1);
+            //         av_alloc.construct(newnode, val);
+            //     }
+            //     if (val.first < nd->value.first) {
+            //         nd->left = insert(nd->left, val);
+            //     } else if (val.first > nd->value.first) {
+            //         nd->right = insert(nd->right, val);
+            //     }
+            //     else
+            //         return nd;
 
-                p->left = tp->right;
-                tp->right = p;
+            //     updateHeight(nd);
 
-                return tp; 
-            }
-            
-            node_pointer lrrotation(node_pointer torotate)
-            {
-                node_pointer p;
-                node_pointer tp;
-                p = torotate;
-                tp = p->left;
-                
-                p->left = tp->right;
-                tp->right->left = tp->parent;
-                p = llrotate(p);
-            }
+            //     int balance = getBalance(nd);
 
-            node_pointer rlrotation(node_pointer torotate)
-            {
-                node_pointer p;
-                node_pointer tp;
-                p = torotate;
-                tp = p->right;
-                
-                p->right = tp->left;
-                tp->left->right = tp->parent;
-                p = rrrotate(p);
-            }
+            //     if (balance > 1 && val.first < nd->left->value.first) {
+            //         return rightRotate(nd);
+            //     }
 
-            node_pointer isexist(node_pointer _first, value_type &val)
-            {
-                node_pointer _inode;
-                _inode = _first;
-                if (val.first < _inode->value.first)
-                    return(isexist(_inode->left, val));
-                else if (val.first > _inode->value.first)
-                    return(isexist(_inode->right, val));
-                else if (val.first == _inode->value.first)
-                    return _inode;
-                return t_nullptr;
-            }
+            //     if (balance < -1 && val.first > nd->right->value.first) {
+            //         return leftRotate(nd);
+            //     }
 
-            ft::pair<iterator, bool> insert(node_pointer _root, node_pointer newnode)
-            {
-                node_pointer _inode = _root;
-                if (_inode == t_nullptr)
-                {
-                    newnode -> parent = _inode -> parent;
-                    newnode -> right = t_nullptr;
-                    newnode-> left = t_nullptr;
-                    rebalance(newnode);
-                    return (ft::make_pair(pointer(newnode), true))
-                }
-                else
-                {
-                    if (newnode->value.first < _root->value.first)
-                    {
-                        _inode->bf += 1;
-                        return(insert(_inode->left, newnode));
-                    }
-                    else if (newnode->value.first > _root->value.first)
-                    {
-                        _inode->bf -= 1;   
-                        return(insert(_inode->right, newnode));
-                    }
-                }
-                  
-            }
+            //     if (balance > 1 && val.first > nd->left->value.first) {
+            //         nd->left = leftRotate(nd->left);
+            //         return rightRotate(nd);
+            //     }
 
-            ft::pair<iterator, bool> insert(value_type &val)
-            {
-                node_pointer found = isexists(root, val);
-                if(found != t_nullptr)
-                    return ft:make_pair(iterator(found), false);
-                if(_size == 0)
-                {
-                    tree->value = val;
-                    _size++;
-                    return ft:make_pair(iterator(tree), true);
-                }
-                else
-                {
-                    node_pointer newnode;
-                    newnode = av_alloc.allocate(1);
-                    av_alloc.construct(newnode, node(val, newnode,newnode,newnode));
-                    return (insert_node(root, newnode));
-                }
-            }
+            //     if (balance < -1 && val.first < nd->right->value.first) {
+            //         nd->right = rightRotate(nd->right);
+            //         return leftRotate(nd);
+            //     }
 
-            
+            //     return nd;
+            // }
 
-            
-            
+            // node_pointer insert(node_pointer _root, node_pointer newnode)
+            // {
+            //     node_pointer _inode = _root;
+            //     if (_inode-> parent == t_nullptr)
+            //     {
+            //         newnode -> parent = _inode -> parent;
+            //         newnode -> right = t_nullptr;
+            //         newnode-> left = t_nullptr;
+            //         // rebalance(newnode);
+            //         return (newnode);
+            //     }
+            //     else
+            //     {
+            //         if (newnode->value.first < _root->value.first)
+            //         {
+            //             return(insert(_inode->left, newnode));
+            //         }
+            //         else if (newnode->value.first > _root->value.first)
+            //         {
+            //             return(insert(_inode->right, newnode));
+            //         }
+            //     }
+            // }
+
+            // node_pointer insert(value_type &val)
+            // {
+            //      node_pointer found ;
+            //     if (root != t_nullptr)
+            //         found = isexist(root, val);
+            //     if(found != t_nullptr)
+            //     {
+            //         return found;
+            //     }
+            //     std::cout << "heere\n" << std::endl;
+            //     if(_size == 0)
+            //     {
+            //         tree->value = val;
+            //         _size++;
+            //         return tree;
+            //     }
+            //     else
+            //     {
+            //         node_pointer newnode;
+            //         newnode = av_alloc.allocate(1);
+            //         av_alloc.construct(newnode, node(val, newnode,newnode,newnode));
+            //         return (insert(root, newnode));
+            //     }
+            // }
     };
 };
 #endif  //!__AVLTREE__H__

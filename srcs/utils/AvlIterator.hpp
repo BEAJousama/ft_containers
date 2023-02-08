@@ -6,7 +6,7 @@
 /*   By: obeaj <obeaj@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 13:33:54 by obeaj             #+#    #+#             */
-/*   Updated: 2023/02/07 16:20:17 by obeaj            ###   ########.fr       */
+/*   Updated: 2023/02/08 15:29:09 by obeaj            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ namespace ft
         
         explicit AvlIterator(pointer ptr) : m_ptr(ptr){};
                 
-		AvlIterator(const AvlIterator<typename ft::remove_const<value_type>::type > & src) : m_ptr(&(*src)) {};
+		AvlIterator(const AvlIterator<typename ft::remove_const<node_pointer>::type> & src) : m_ptr(&(*src)) {};
 
 		AvlIterator<value_type> & operator=(AvlIterator<typename ft::remove_const<value_type>::type > const & src) {
 			m_ptr = &(*src);
