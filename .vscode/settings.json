@@ -99,6 +99,7 @@
         "variant": "cpp",
         "__bits": "cpp",
         "queue": "cpp",
-        "__functional_base_03": "cpp"
+        "__functional_base_03": "cpp",
+        "*.def": "cpp"
     }
 }

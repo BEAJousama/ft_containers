@@ -6,7 +6,7 @@
 /*   By: obeaj <obeaj@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 18:18:52 by obeaj             #+#    #+#             */
-/*   Updated: 2023/02/08 17:28:47 by obeaj            ###   ########.fr       */
+/*   Updated: 2023/02/10 01:50:34 by obeaj            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ namespace ft{
             avl_node*   right;
 
  		public:
-			avl_node(): key() {};
-			avl_node(value_type key): key(key){};
+			avl_node(): value(value_type()) {};
+			avl_node(value_type val): value(val){};
     };
 
     template <class T, class Compare, class Alloc, class Node = avl_node<T>, typename AllocNode = std::allocator<Node> > class AvlTree
@@ -65,17 +65,18 @@ namespace ft{
             // typedef ft::reverse_iterator<const_iterator>                                const_reverse_iterator;
         
         private:
-            node_pointer    _end;
+            node_pointer    _start;
             node_pointer    _root;
             alloc_node      av_alloc;
+            compare_type    compare;
             size_type       _size;
 
         private:
 
-            node_pointer createNode(value_type key)
+            node_pointer createNode(value_type val)
 			{
 				node_pointer newnode = av_alloc.allocate(1);
-				this->_alloc.construct(newnode, key);
+				this->_alloc.construct(newnode, node(val));
 				newnode->height = 1;
 				newnode->parent = nullptr;
 				newnode->left = nullptr;
@@ -109,9 +110,9 @@ namespace ft{
                 y->right = x;
                 x->left = tmp;
 
-                if (ptmp != _end && ptmp->left = x)
+                if (ptmp != _start && ptmp->left = x)
                     ptmp->left = y;
-                else if (ptmp != _end && ptmp->right = x)
+                else if (ptmp != _start && ptmp->right = x)
                     ptmp->right = y
                 y->parent = x->parent;
                 x->parent = y;
@@ -132,9 +133,9 @@ namespace ft{
                 y->left = x;
                 x->right = tmp;
 
-                if (ptmp != _end && ptmp->left = x)
+                if (ptmp != _start && ptmp->left = x)
                     ptmp->left = y;
-                else if (ptmp != _end && ptmp->right = x)
+                else if (ptmp != _start && ptmp->right = x)
                     ptmp->right = y
                 y->parent = x->parent;
                 x->parent = y;
@@ -189,14 +190,39 @@ namespace ft{
 				return (node);
 			};
 
-
-
-
-        public:
-            AvlTree(const alloc_node& alloc = alloc_node()):av_alloc(alloc)
+            node_pointer node_insert(node_pointer root, node_pointer newnode)
             {
-                _end = createNode(value_type());
-                _root = _end;
+                if(root == nullptr || root = _start)
+                    return newnode;
+                if(compare(newnode->value.first, root->value.first))
+                {
+                    root->left = node_insert(root->left, newnode);
+                    root->left == newnode ? newnode->parent = root;
+                }
+                else if (!compare(newnode->value.first, root->value.first))
+                {
+                    root->right = node_insert(root->right, newnode);
+                    root->right == newnode ? newnode->parent = root;  
+                }
+                else
+                    return root;
+                updateHeight(root);
+                root = balanceNode(root);
+                return root;
+            };
+            
+            node_pointer node_delete()
+            {
+                
+            };
+            
+        public:
+            AvlTree(const alloc_node& alloc = alloc_node(), const compare_type& comp = compare_type()):
+            av_alloc(alloc).
+            compare(comp)
+            {
+                _start = createNode(value_type());
+                _root = _start;
                 _size = 0;
             }
             ~AvlTree()
@@ -204,6 +230,42 @@ namespace ft{
                 
             }
         public:
+
+            node_pointer insert(value_type &val, node_pointer pos = nullptr)
+            {
+                node_pointer nd = createNode(val);
+                if (pos ==  nullptr)
+                {
+                    if (_root == _start)
+                    {
+                        _root = nd;
+                        nd->parent = _start
+                        _start->right = nd;
+                        _size += 1;
+                    }
+                    else
+                    {
+                        _root = node_insert(_root, nd);
+                        _size += 1;
+                    }
+                }
+                else
+                {
+                    if (pos == _start)
+                    {
+                        pos = nd;
+                        nd->parent = _start
+                        _start->right = nd;
+                        _size += 1;
+                    }
+                    else
+                    {
+                        pos = node_insert(pos, nd);
+                        _size += 1;
+                    }  
+                }
+                return nd;
+            }
 
             // node_pointer insert(node_pointer nd, value_type &val) {
 
