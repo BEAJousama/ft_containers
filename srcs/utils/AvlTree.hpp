@@ -6,7 +6,7 @@
 /*   By: obeaj <obeaj@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 18:18:52 by obeaj             #+#    #+#             */
-/*   Updated: 2023/02/10 01:50:34 by obeaj            ###   ########.fr       */
+/*   Updated: 2023/02/10 17:58:25 by obeaj            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "./utils.hpp"
 #include "./ft_type_traits.hpp"
 // #include "./AvlIterator.hpp"
+
 #include <iostream>
 
 namespace ft{
@@ -64,7 +65,7 @@ namespace ft{
             // typedef ft::reverse_iterator<iterator>                                      reverse_iterator;
             // typedef ft::reverse_iterator<const_iterator>                                const_reverse_iterator;
         
-        private:
+        public:
             node_pointer    _start;
             node_pointer    _root;
             alloc_node      av_alloc;
@@ -76,7 +77,7 @@ namespace ft{
             node_pointer createNode(value_type val)
 			{
 				node_pointer newnode = av_alloc.allocate(1);
-				this->_alloc.construct(newnode, node(val));
+				this->av_alloc.construct(newnode, node(val));
 				newnode->height = 1;
 				newnode->parent = nullptr;
 				newnode->left = nullptr;
@@ -110,10 +111,10 @@ namespace ft{
                 y->right = x;
                 x->left = tmp;
 
-                if (ptmp != _start && ptmp->left = x)
+                if (ptmp != _start && ptmp->left == x)
                     ptmp->left = y;
-                else if (ptmp != _start && ptmp->right = x)
-                    ptmp->right = y
+                else if (ptmp != _start && ptmp->right == x)
+                    ptmp->right = y;
                 y->parent = x->parent;
                 x->parent = y;
 
@@ -133,10 +134,10 @@ namespace ft{
                 y->left = x;
                 x->right = tmp;
 
-                if (ptmp != _start && ptmp->left = x)
+                if (ptmp != _start && ptmp->left == x)
                     ptmp->left = y;
-                else if (ptmp != _start && ptmp->right = x)
-                    ptmp->right = y
+                else if (ptmp != _start && ptmp->right == x)
+                    ptmp->right = y;
                 y->parent = x->parent;
                 x->parent = y;
 
@@ -149,7 +150,7 @@ namespace ft{
 
             node_pointer RightLeftRotate(node_pointer node)
 			{
-				node->right = _rightRotate(node->right);
+				node->right = rightRotate(node->right);
 				return (leftRotate(node));
 			};
 
@@ -167,6 +168,7 @@ namespace ft{
 					destructNode(node->right);
 					av_alloc.destroy(node);
 					av_alloc.deallocate(node, 1);
+                    node = nullptr;
 				}
 			};
 
@@ -192,33 +194,74 @@ namespace ft{
 
             node_pointer node_insert(node_pointer root, node_pointer newnode)
             {
-                if(root == nullptr || root = _start)
+                if(root == nullptr || root == _start)
                     return newnode;
                 if(compare(newnode->value.first, root->value.first))
                 {
                     root->left = node_insert(root->left, newnode);
-                    root->left == newnode ? newnode->parent = root;
+                    root->left == newnode ? newnode->parent = root : root->left;
                 }
                 else if (!compare(newnode->value.first, root->value.first))
                 {
                     root->right = node_insert(root->right, newnode);
-                    root->right == newnode ? newnode->parent = root;  
+                    root->right == newnode ? newnode->parent = root : root->left;  
                 }
                 else
                     return root;
                 updateHeight(root);
-                root = balanceNode(root);
-                return root;
+                return (balanceNode(root));
             };
             
-            node_pointer node_delete()
+            node_pointer node_delete(node_pointer root, value_type todelete)
             {
-                
+                if (root == nullptr)
+                    return root;
+				else if (this->compare(todelete.first, root->value.first))
+					root->left = node_delete(root->left, todelete);
+				else if (this->compare(root->value.first, todelete.first))
+					root->right = node_delete(root->right, todelete);
+                else
+                {
+                    if (root->right == nullptr && root->left == nullptr)
+                    {
+                    	av_alloc.destroy(root);
+					    av_alloc.deallocate(root, 1);
+                        // root = nullptr;
+                        return nullptr;
+                    }
+                    else if (root->right == nullptr)
+                    {
+                        node_pointer tmp = root->parent;
+                        root->left->parent = root->parent;
+                        root->parent->left = root->left;
+                        av_alloc.destroy(root);
+					    av_alloc.deallocate(root, 1);
+                        return tmp->left;
+                    }
+                    else if(root->left == nullptr)
+                    {
+                        node_pointer tmp = root->parent;
+                        root->right->parent = root->parent;
+                        root->parent->right = root->right;
+                        av_alloc.destroy(root);
+					    av_alloc.deallocate(root, 1);
+                        return tmp->right;                        
+                    }
+                    else
+                    {
+                        value_type tmp = _getSuccessor(root)->value;
+                        root->value = tmp;
+                        root->right = node_delete(root -> right, tmp);
+                    }
+                };
+
+                updateHeight(root);
+                return (balanceNode(root));
             };
             
         public:
             AvlTree(const alloc_node& alloc = alloc_node(), const compare_type& comp = compare_type()):
-            av_alloc(alloc).
+            av_alloc(alloc),
             compare(comp)
             {
                 _start = createNode(value_type());
@@ -231,7 +274,68 @@ namespace ft{
             }
         public:
 
-            node_pointer insert(value_type &val, node_pointer pos = nullptr)
+            node_pointer _getSuccessor(node_pointer nd)
+            {
+                if (nd->right != nullptr)
+                {
+                    nd = nd->right;
+                    while (nd != nullptr && nd->left != nullptr)
+                        nd = nd->left;
+                }
+                else
+                {
+                    node_pointer tmp = nd->parent;
+                    while (nd != nullptr && nd->parent != nullptr)
+                    {
+                        if (tmp->left == nd)
+                        {
+                            nd = tmp;
+                            break;
+                        }
+                        else
+                        {
+                            nd = tmp;
+                            tmp = tmp->parent;     
+                        }
+                    }
+                }
+                return nd;
+            };
+
+            node_pointer _getPredecessor(node_pointer nd)
+            {
+                if (nd->left != nullptr)
+                {
+                    nd = nd->left;
+                    while (nd != nullptr && nd->right != nullptr)
+                        nd = nd->right;
+                }
+                else
+                {
+                    node_pointer tmp = nd->parent;
+                    while (nd != nullptr && nd->parent != nullptr)
+                    {
+                        if (tmp->right == nd)
+                        {
+                            nd = tmp;
+                            break;
+                        }
+                        else
+                        {
+                            nd = tmp;
+                            tmp = tmp->parent;     
+                        }
+                    }
+                }
+                return nd;
+            };
+
+            void remove(value_type val)
+            {
+                _root = node_delete(_root,val);
+            }
+
+            node_pointer insert(value_type val, node_pointer pos = nullptr)
             {
                 node_pointer nd = createNode(val);
                 if (pos ==  nullptr)
@@ -239,7 +343,7 @@ namespace ft{
                     if (_root == _start)
                     {
                         _root = nd;
-                        nd->parent = _start
+                        nd->parent = _start;
                         _start->right = nd;
                         _size += 1;
                     }
@@ -254,7 +358,7 @@ namespace ft{
                     if (pos == _start)
                     {
                         pos = nd;
-                        nd->parent = _start
+                        nd->parent = _start;
                         _start->right = nd;
                         _size += 1;
                     }
