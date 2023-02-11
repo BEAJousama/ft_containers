@@ -6,7 +6,7 @@
 /*   By: obeaj <obeaj@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 15:51:11 by obeaj             #+#    #+#             */
-/*   Updated: 2023/01/25 16:01:37 by obeaj            ###   ########.fr       */
+/*   Updated: 2023/02/11 12:57:27 by obeaj            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,9 @@ namespace ft
     template <>          struct ft_is_integral<signed char>        : public ft::true_type {};
     template <>          struct ft_is_integral<unsigned char>      : public ft::true_type {};
     template <>          struct ft_is_integral<wchar_t>            : public ft::true_type {};
-    template <>          struct ft_is_integral<char16_t>           : public ft::true_type {};
-    template <>          struct ft_is_integral<char32_t>           : public ft::true_type {};
+    //ATTENTION : check how to use char16_t without compilation errors
+    // template <>          struct ft_is_integral<char16_t>           : public ft::true_type {};
+    // template <>          struct ft_is_integral<char32_t>           : public ft::true_type {};
     template <>          struct ft_is_integral<short>              : public ft::true_type {};
     template <>          struct ft_is_integral<unsigned short>     : public ft::true_type {};
     template <>          struct ft_is_integral<int>                : public ft::true_type {};

@@ -6,7 +6,7 @@
 /*   By: obeaj <obeaj@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 18:18:52 by obeaj             #+#    #+#             */
-/*   Updated: 2023/02/10 17:58:25 by obeaj            ###   ########.fr       */
+/*   Updated: 2023/02/11 19:37:24 by obeaj            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 #define __AVLTREE__H__
 
 #include "./utils.hpp"
-#include "./ft_type_traits.hpp"
-// #include "./AvlIterator.hpp"
+#include "./AvlIterator.hpp"
 
 #include <iostream>
 
@@ -60,17 +59,59 @@ namespace ft{
             typedef const Node*                             const_node_pointer;
         
         public:
-            // typedef AvlIterator<node_pointer, reference, pointer, compare_type>         iterator;
-            // typedef AvlIterator<const_node_pointer, reference, pointer, compare_type>   const_iterator;
-            // typedef ft::reverse_iterator<iterator>                                      reverse_iterator;
-            // typedef ft::reverse_iterator<const_iterator>                                const_reverse_iterator;
-        
+            typedef AvlIterator<value_type, node_pointer>                               iterator;
+            typedef AvlIterator<const value_type, const node_pointer>                   const_iterator;
+            typedef ft::reverse_iterator<iterator>                                      reverse_iterator;
+            typedef ft::reverse_iterator<const_iterator>                                const_reverse_iterator;
+            
         public:
+            //ATTENTION : this should be private
             node_pointer    _start;
             node_pointer    _root;
             alloc_node      av_alloc;
             compare_type    compare;
             size_type       _size;
+
+        public:
+			iterator begin()
+			{
+				return iterator(node_min(_root));
+			};
+			
+			iterator end()
+			{
+				return iterator(_start);
+			};
+
+			const_iterator begin() const
+			{
+				return const_iterator(node_min(_root));
+			};
+			
+			const_iterator end() const
+			{
+				return const_iterator(_start);
+			};
+			
+			reverse_iterator rbegin()
+			{
+				return reverse_iterator(end());
+			};
+			
+			reverse_iterator rend()
+			{
+				return reverse_iterator(begin());
+			};
+
+			const_reverse_iterator rbegin() const
+			{
+				return const_reverse_iterator(end());
+			};
+			
+			const_reverse_iterator rend() const
+			{
+				return const_reverse_iterator(begin());
+			};
 
         private:
 
@@ -134,7 +175,7 @@ namespace ft{
                 y->left = x;
                 x->right = tmp;
 
-                if (ptmp != _start && ptmp->left == x)
+                if (ptmp->left == x)
                     ptmp->left = y;
                 else if (ptmp != _start && ptmp->right == x)
                     ptmp->right = y;
@@ -199,12 +240,14 @@ namespace ft{
                 if(compare(newnode->value.first, root->value.first))
                 {
                     root->left = node_insert(root->left, newnode);
-                    root->left == newnode ? newnode->parent = root : root->left;
+                    if (root->left == newnode)
+                        root->left->parent = root;
                 }
                 else if (!compare(newnode->value.first, root->value.first))
                 {
                     root->right = node_insert(root->right, newnode);
-                    root->right == newnode ? newnode->parent = root : root->left;  
+                    if (root->right == newnode)
+                        root->right->parent = root;
                 }
                 else
                     return root;
@@ -258,8 +301,63 @@ namespace ft{
                 updateHeight(root);
                 return (balanceNode(root));
             };
+
+            node_pointer node_search(node_pointer root, value_type tofind)
+            {
+                if (root == nullptr)
+                    return _start;
+                else if (compare(tofind.first, root->value.first))
+                    return node_search(root->left, tofind);
+                else if (compare(root->value.first, tofind.first))
+                    return node_search(root->right, tofind);
+                else
+                    return root;
+                return root;
+            };
+
+            node_pointer node_min(node_pointer root)
+            {
+                if (root == nullptr)
+                    return _start;
+                while(root->left != nullptr)
+                    root = root->left;
+                return root;
+            };
+
+            node_pointer node_upper_bound(node_pointer root, value_type value)
+            {
+                if (root == nullptr) return _start;
+                node_pointer found = node_search(root, value);
+                if (found != nullptr)
+                    return (_getSuccessor(root, value));
+                else
+                {
+                    if (compare(value.first, root->value.first))
+                        return root;
+                    else if (compare(root->value.first,value.first))
+                        return node_upper_bound(root->right, value);   
+                }
+                return _start;
+            };
             
+            node_pointer node_lower_bound(node_pointer root, value_type value)
+            {
+                if (root == nullptr) return _start;
+                node_pointer found = node_search(root, value);
+                if (found != nullptr)
+                    return (_getPredecessor(root, value));
+                else
+                {
+                    if (compare(root->value.first,value.first))
+                        return root;
+                    else if (!compare(root->value.first,value.first))
+                        return node_lower_bound(root->left, value);   
+                }
+                return _start;
+            };
+                    
         public:
+        
             AvlTree(const alloc_node& alloc = alloc_node(), const compare_type& comp = compare_type()):
             av_alloc(alloc),
             compare(comp)
@@ -267,11 +365,12 @@ namespace ft{
                 _start = createNode(value_type());
                 _root = _start;
                 _size = 0;
-            }
+            };
             ~AvlTree()
             {
-                
-            }
+                this->clear();
+            };
+            
         public:
 
             node_pointer _getSuccessor(node_pointer nd)
@@ -333,7 +432,7 @@ namespace ft{
             void remove(value_type val)
             {
                 _root = node_delete(_root,val);
-            }
+            };
 
             node_pointer insert(value_type val, node_pointer pos = nullptr)
             {
@@ -343,8 +442,8 @@ namespace ft{
                     if (_root == _start)
                     {
                         _root = nd;
-                        nd->parent = _start;
-                        _start->right = nd;
+                        _root->parent = _start;
+                        _start->left = _root;
                         _size += 1;
                     }
                     else
@@ -358,8 +457,8 @@ namespace ft{
                     if (pos == _start)
                     {
                         pos = nd;
-                        nd->parent = _start;
-                        _start->right = nd;
+                        pos->parent = _start;
+                        _start->left = pos;
                         _size += 1;
                     }
                     else
@@ -369,104 +468,32 @@ namespace ft{
                     }  
                 }
                 return nd;
-            }
+            };
 
-            // node_pointer insert(node_pointer nd, value_type &val) {
+            node_pointer search(value_type val)
+            {
+                return node_search(_root, val);
+            };
 
-            //     if (nd == tree)
-            //     {
-            //         tree -> value = val;
-            //         tree ->left = t_nullptr;
-            //         tree ->right = t_nullptr;
-            //         return tree;
-            //     }
-            //     if (nd == t_nullptr)
-            //     {
-            //         node_pointer newnode;
-            //         newnode = av_alloc.allocate(1);
-            //         av_alloc.construct(newnode, val);
-            //     }
-            //     if (val.first < nd->value.first) {
-            //         nd->left = insert(nd->left, val);
-            //     } else if (val.first > nd->value.first) {
-            //         nd->right = insert(nd->right, val);
-            //     }
-            //     else
-            //         return nd;
+            node_pointer upper_bound(value_type val)
+            {
+                return node_upper_bound(_root, val);
+            };
+            
+            node_pointer lower_bound(value_type val)
+            {
+                return node_lower_bound(_root, val);
+            };
 
-            //     updateHeight(nd);
+            size_type size() const
+            {
+                return _size;
+            };
 
-            //     int balance = getBalance(nd);
-
-            //     if (balance > 1 && val.first < nd->left->value.first) {
-            //         return rightRotate(nd);
-            //     }
-
-            //     if (balance < -1 && val.first > nd->right->value.first) {
-            //         return leftRotate(nd);
-            //     }
-
-            //     if (balance > 1 && val.first > nd->left->value.first) {
-            //         nd->left = leftRotate(nd->left);
-            //         return rightRotate(nd);
-            //     }
-
-            //     if (balance < -1 && val.first < nd->right->value.first) {
-            //         nd->right = rightRotate(nd->right);
-            //         return leftRotate(nd);
-            //     }
-
-            //     return nd;
-            // }
-
-            // node_pointer insert(node_pointer _root, node_pointer newnode)
-            // {
-            //     node_pointer _inode = _root;
-            //     if (_inode-> parent == t_nullptr)
-            //     {
-            //         newnode -> parent = _inode -> parent;
-            //         newnode -> right = t_nullptr;
-            //         newnode-> left = t_nullptr;
-            //         // rebalance(newnode);
-            //         return (newnode);
-            //     }
-            //     else
-            //     {
-            //         if (newnode->value.first < _root->value.first)
-            //         {
-            //             return(insert(_inode->left, newnode));
-            //         }
-            //         else if (newnode->value.first > _root->value.first)
-            //         {
-            //             return(insert(_inode->right, newnode));
-            //         }
-            //     }
-            // }
-
-            // node_pointer insert(value_type &val)
-            // {
-            //      node_pointer found ;
-            //     if (root != t_nullptr)
-            //         found = isexist(root, val);
-            //     if(found != t_nullptr)
-            //     {
-            //         return found;
-            //     }
-            //     std::cout << "heere\n" << std::endl;
-            //     if(_size == 0)
-            //     {
-            //         tree->value = val;
-            //         _size++;
-            //         return tree;
-            //     }
-            //     else
-            //     {
-            //         node_pointer newnode;
-            //         newnode = av_alloc.allocate(1);
-            //         av_alloc.construct(newnode, node(val, newnode,newnode,newnode));
-            //         return (insert(root, newnode));
-            //     }
-            // }
+            void clear()
+            {
+                destructNode(_start);
+            };
     };
 };
 #endif  //!__AVLTREE__H__

@@ -6,7 +6,7 @@
 /*   By: obeaj <obeaj@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 16:01:16 by obeaj             #+#    #+#             */
-/*   Updated: 2023/02/06 18:27:50 by obeaj            ###   ########.fr       */
+/*   Updated: 2023/02/11 19:40:19 by obeaj            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ namespace ft
         public:
             typedef T                                           mapped_type ;
             typedef Key                                         key_type ;
-            typedef pair<const key_type,mapped_type>            value_type ;
+            typedef pair<const key_type, mapped_type>           value_type ;
             typedef Compare                                     key_compare ;
             typedef Alloc                                       allocator_type ;
             typedef typename allocator_type::reference          reference ;
@@ -56,10 +56,7 @@ namespace ft
                 }
             };
         private:
-            // typedef map_value_compare<key_type, value_type, key_compare>        vc;
-            typedef AvlTree<value_type, compare_type, allocator_type = allocator_type()>  tree;
-            
-            allocator_type  m_alloc;
+            typedef AvlTree<value_type, key_compare, allocator_type>  tree;
             tree            m_tree;
         public:
             explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type())
