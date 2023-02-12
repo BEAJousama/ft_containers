@@ -6,7 +6,7 @@
 /*   By: obeaj <obeaj@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 18:18:52 by obeaj             #+#    #+#             */
-/*   Updated: 2023/02/11 19:37:24 by obeaj            ###   ########.fr       */
+/*   Updated: 2023/02/12 23:51:40 by obeaj            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include "./utils.hpp"
 #include "./AvlIterator.hpp"
+#include <iostream>
 
 #include <iostream>
 
@@ -50,7 +51,8 @@ namespace ft{
             typedef typename alloc_type::const_pointer      const_pointer;
             typedef typename alloc_type::reference          reference;
             typedef typename alloc_type::const_reference    const_reference;
-            typedef size_t                                  size_type;
+			typedef typename alloc_type::difference_type    difference_type;
+			typedef typename alloc_type::size_type			size_type;
         
         public:
             typedef Node                                    node;
@@ -72,46 +74,6 @@ namespace ft{
             compare_type    compare;
             size_type       _size;
 
-        public:
-			iterator begin()
-			{
-				return iterator(node_min(_root));
-			};
-			
-			iterator end()
-			{
-				return iterator(_start);
-			};
-
-			const_iterator begin() const
-			{
-				return const_iterator(node_min(_root));
-			};
-			
-			const_iterator end() const
-			{
-				return const_iterator(_start);
-			};
-			
-			reverse_iterator rbegin()
-			{
-				return reverse_iterator(end());
-			};
-			
-			reverse_iterator rend()
-			{
-				return reverse_iterator(begin());
-			};
-
-			const_reverse_iterator rbegin() const
-			{
-				return const_reverse_iterator(end());
-			};
-			
-			const_reverse_iterator rend() const
-			{
-				return const_reverse_iterator(begin());
-			};
 
         private:
 
@@ -355,24 +317,7 @@ namespace ft{
                 }
                 return _start;
             };
-                    
-        public:
-        
-            AvlTree(const alloc_node& alloc = alloc_node(), const compare_type& comp = compare_type()):
-            av_alloc(alloc),
-            compare(comp)
-            {
-                _start = createNode(value_type());
-                _root = _start;
-                _size = 0;
-            };
-            ~AvlTree()
-            {
-                this->clear();
-            };
             
-        public:
-
             node_pointer _getSuccessor(node_pointer nd)
             {
                 if (nd->right != nullptr)
@@ -428,6 +373,88 @@ namespace ft{
                 }
                 return nd;
             };
+            
+        /*---------------------------------------------- Iterators ------------------------------------------------*/
+        
+        public:
+        
+			iterator begin()
+			{
+				return iterator(node_min(_root));
+			};
+			
+			iterator end()
+			{
+				return iterator(_start);
+			};
+
+			const_iterator begin() const
+			{
+				return const_iterator(node_min(_root));
+			};
+			
+			const_iterator end() const
+			{
+				return const_iterator(_start);
+			};
+			
+			reverse_iterator rbegin()
+			{
+				return reverse_iterator(end());
+			};
+			
+			reverse_iterator rend()
+			{
+				return reverse_iterator(begin());
+			};
+
+			const_reverse_iterator rbegin() const
+			{
+				return const_reverse_iterator(end());
+			};
+			
+			const_reverse_iterator rend() const
+			{
+				return const_reverse_iterator(begin());
+			};
+            
+        public:
+        
+            AvlTree(const alloc_node& alloc = alloc_node(), const compare_type& comp = compare_type()):
+            av_alloc(alloc),
+            compare(comp)
+            {
+                _start = createNode(value_type());
+                _root = _start;
+                _size = 0;
+            };
+            
+            ~AvlTree()
+            {
+                this->clear();
+            };
+        
+        /*---------------------------------------------- Capacity -------------------------------------------------*/
+        public:
+
+        	bool empty() const 
+            { 
+                return (this->_size == 0); 
+            };
+            
+			size_type size() const
+            { 
+                return (this->_size); 
+            };
+            
+			size_type	max_size()	const	
+            { 
+                return (std::min<size_type>(std::numeric_limits<size_type>::max() / sizeof(node), std::numeric_limits<difference_type>::max())); 
+            };
+
+        /*---------------------------------------------- Modifiers -------------------------------------------------*/
+
+        public:
 
             void remove(value_type val)
             {
@@ -469,6 +496,13 @@ namespace ft{
                 }
                 return nd;
             };
+            
+            void clear()
+            {
+                destructNode(_start);
+            };
+
+        /*---------------------------------------------- Operations -------------------------------------------------*/
 
             node_pointer search(value_type val)
             {
@@ -484,16 +518,7 @@ namespace ft{
             {
                 return node_lower_bound(_root, val);
             };
-
-            size_type size() const
-            {
-                return _size;
-            };
-
-            void clear()
-            {
-                destructNode(_start);
-            };
+            
     };
 };
 #endif  //!__AVLTREE__H__
