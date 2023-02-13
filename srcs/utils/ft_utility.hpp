@@ -6,7 +6,7 @@
 /*   By: obeaj <obeaj@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 13:41:24 by obeaj             #+#    #+#             */
-/*   Updated: 2023/02/10 17:57:23 by obeaj            ###   ########.fr       */
+/*   Updated: 2023/02/13 16:23:54 by obeaj            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,34 +15,33 @@
 
 namespace ft
 {
+
     template<class T1, class T2> struct pair
     {
         public:
             T1 first;
             T2 second;
-            pair()
+            pair() : first(), second()
             {
-            }
-            pair& operator=(const pair& obj)
+            };
+        
+      
+            pair (T1 const& a, T2 const& b) : first(a), second(b)
             {
-                if (this->first != obj.first && this->second != obj.second)
-                {
-                    this->first = obj.first;
-                    this->second = obj.second;
-                }
+            };
+            
+            pair& operator=(pair const& obj)
+            {
+                first = obj.first;
+                second = obj.second;
                 return *this;
             }
             
-            pair(const pair& obj)
+            template<class _U1, class _U2>
+            pair(pair<_U1, _U2> const& obj) : first(obj.first), second(obj.second)
             {
-                *this=obj;
             }
             
-            pair (const T1& a, const T2& b)
-            {
-                this->first = a;
-                this->second = b;
-            }
             ~pair()
             {
             }

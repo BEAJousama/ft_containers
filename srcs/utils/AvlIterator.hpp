@@ -6,7 +6,7 @@
 /*   By: obeaj <obeaj@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 13:33:54 by obeaj             #+#    #+#             */
-/*   Updated: 2023/02/11 17:04:06 by obeaj            ###   ########.fr       */
+/*   Updated: 2023/02/13 12:01:48 by obeaj            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,10 @@ namespace ft
         
         //ATTENTION:  -- and ++ to be updated using compare_type
         
-        // node_pointer base(){return m_ptr;};
+        node_pointer base()
+        {
+            return m_ptr;
+        };
         
         self_type & operator++ ()
         {

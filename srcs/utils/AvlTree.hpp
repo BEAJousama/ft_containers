@@ -6,7 +6,7 @@
 /*   By: obeaj <obeaj@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 18:18:52 by obeaj             #+#    #+#             */
-/*   Updated: 2023/02/12 23:51:40 by obeaj            ###   ########.fr       */
+/*   Updated: 2023/02/13 17:57:09 by obeaj            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@
 
 #include <iostream>
 
-namespace ft{
+namespace ft
+{
     template <typename T>
         struct avl_node
     {
@@ -167,9 +168,18 @@ namespace ft{
 			{
 				if (node != nullptr)
 				{
-					destructNode(node->left);
-					destructNode(node->right);
+                    destructNode(node->left);
+                    destructNode(node->right);
 					av_alloc.destroy(node);
+				}
+			};
+            
+			void    deallocateNode(node_pointer node)
+			{
+				if (node != nullptr)
+				{
+                    deallocateNode(node->left);
+                    deallocateNode(node->right);
 					av_alloc.deallocate(node, 1);
                     node = nullptr;
 				}
@@ -198,7 +208,10 @@ namespace ft{
             node_pointer node_insert(node_pointer root, node_pointer newnode)
             {
                 if(root == nullptr || root == _start)
+                {
+                    _size += 1;   
                     return newnode;
+                }
                 if(compare(newnode->value.first, root->value.first))
                 {
                     root->left = node_insert(root->left, newnode);
@@ -212,7 +225,9 @@ namespace ft{
                         root->right->parent = root;
                 }
                 else
+                {
                     return root;
+                }
                 updateHeight(root);
                 return (balanceNode(root));
             };
@@ -231,7 +246,7 @@ namespace ft{
                     {
                     	av_alloc.destroy(root);
 					    av_alloc.deallocate(root, 1);
-                        // root = nullptr;
+                        _size--;
                         return nullptr;
                     }
                     else if (root->right == nullptr)
@@ -241,6 +256,7 @@ namespace ft{
                         root->parent->left = root->left;
                         av_alloc.destroy(root);
 					    av_alloc.deallocate(root, 1);
+                        _size--;
                         return tmp->left;
                     }
                     else if(root->left == nullptr)
@@ -250,12 +266,20 @@ namespace ft{
                         root->parent->right = root->right;
                         av_alloc.destroy(root);
 					    av_alloc.deallocate(root, 1);
+                        _size--;
                         return tmp->right;                        
                     }
                     else
                     {
+                        //ATTENTION : Fonctionnement a assurer
+                        node_pointer tmpr = root->right;
+                        node_pointer tmpl = root->left;
                         value_type tmp = _getSuccessor(root)->value;
-                        root->value = tmp;
+                        av_alloc.destroy(root);
+                        av_alloc.construct(root, tmp);
+                        root->left = tmpl;
+                        root->right = tmpr;
+                        // root->value = tmp;
                         root->right = node_delete(root -> right, tmp);
                     }
                 };
@@ -264,7 +288,7 @@ namespace ft{
                 return (balanceNode(root));
             };
 
-            node_pointer node_search(node_pointer root, value_type tofind)
+            node_pointer node_search(node_pointer root, value_type tofind) const
             {
                 if (root == nullptr)
                     return _start;
@@ -274,7 +298,7 @@ namespace ft{
                     return node_search(root->right, tofind);
                 else
                     return root;
-                return root;
+                return nullptr;
             };
 
             node_pointer node_min(node_pointer root)
@@ -286,34 +310,38 @@ namespace ft{
                 return root;
             };
 
-            node_pointer node_upper_bound(node_pointer root, value_type value)
-            {
-                if (root == nullptr) return _start;
-                node_pointer found = node_search(root, value);
-                if (found != nullptr)
-                    return (_getSuccessor(root, value));
-                else
-                {
-                    if (compare(value.first, root->value.first))
-                        return root;
-                    else if (compare(root->value.first,value.first))
-                        return node_upper_bound(root->right, value);   
-                }
-                return _start;
-            };
-            
             node_pointer node_lower_bound(node_pointer root, value_type value)
             {
                 if (root == nullptr) return _start;
                 node_pointer found = node_search(root, value);
-                if (found != nullptr)
-                    return (_getPredecessor(root, value));
+                if (found != nullptr && found != _start)
+                    return (found);
                 else
                 {
-                    if (compare(root->value.first,value.first))
+                    if (compare(value.first, root->value.first) && !compare(value.first , _getPredecessor(root)->value.first))
                         return root;
-                    else if (!compare(root->value.first,value.first))
-                        return node_lower_bound(root->left, value);   
+                    else if (compare(root->value.first,value.first))
+                        return node_lower_bound(root->right, value);
+                    else if (compare(value.first, root->value.first))
+                        return node_lower_bound(root->left, value);
+                }
+                return _start;
+            };
+            //ATTENTION: fix upper bound : doesn't work when value is not found
+            node_pointer node_upper_bound(node_pointer root, value_type value)
+            {
+                if (root == nullptr) return _start;
+                node_pointer found = node_search(root, value);
+                if (found != root && found != _start)
+                    return (_getSuccessor(found));
+                else
+                {
+                    if (compare(root->value.first,value.first) && !compare(_getSuccessor(root)->value.first , value.first))
+                        return root;
+                    else if (compare(value.first, root->value.first))
+                        return node_upper_bound(root->left, value);
+                    else if (compare(root->value.first,value.first))
+                        return node_upper_bound(root->right, value);
                 }
                 return _start;
             };
@@ -431,7 +459,8 @@ namespace ft{
             
             ~AvlTree()
             {
-                this->clear();
+                // this->clear();
+                // this->deallocateNode(_start);
             };
         
         /*---------------------------------------------- Capacity -------------------------------------------------*/
@@ -471,12 +500,11 @@ namespace ft{
                         _root = nd;
                         _root->parent = _start;
                         _start->left = _root;
-                        _size += 1;
+                        _size++;
                     }
                     else
                     {
                         _root = node_insert(_root, nd);
-                        _size += 1;
                     }
                 }
                 else
@@ -486,12 +514,11 @@ namespace ft{
                         pos = nd;
                         pos->parent = _start;
                         _start->left = pos;
-                        _size += 1;
+                        _size++;
                     }
                     else
                     {
                         pos = node_insert(pos, nd);
-                        _size += 1;
                     }  
                 }
                 return nd;
@@ -500,11 +527,39 @@ namespace ft{
             void clear()
             {
                 destructNode(_start);
+                _size = 0;
+            };
+            
+            void dealloc()
+            {
+                deallocateNode(_start);
+            };
+
+            void swap (AvlTree& x)
+            {
+                node_pointer    _start_tmp = _start;
+                node_pointer    _root_tmp = _root;
+                alloc_node      av_alloc_tmp = av_alloc;
+                compare_type    compare_tmp = compare;
+                size_type       _size_tmp = _size;
+
+                _start = x._start;
+                _root = x._root;
+                av_alloc = x.av_alloc;
+                compare = x.compare;
+                _size = x._size;;
+                
+                x._start = _start_tmp;
+                x._root = _root_tmp;
+                x.av_alloc = av_alloc_tmp;
+                x.compare = compare_tmp;
+                x._size = _size_tmp;
+                
             };
 
         /*---------------------------------------------- Operations -------------------------------------------------*/
 
-            node_pointer search(value_type val)
+            node_pointer search(value_type val) const
             {
                 return node_search(_root, val);
             };
