@@ -6,7 +6,7 @@
 /*   By: obeaj <obeaj@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 13:41:24 by obeaj             #+#    #+#             */
-/*   Updated: 2023/02/13 16:23:54 by obeaj            ###   ########.fr       */
+/*   Updated: 2023/02/17 22:07:50 by obeaj            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,10 @@ namespace ft
 
     template<class T1, class T2> struct pair
     {
+        public:
+        
+            typedef T1 first_type;
+            typedef T2 second_type;
         public:
             T1 first;
             T2 second;

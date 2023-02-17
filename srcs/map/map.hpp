@@ -6,7 +6,7 @@
 /*   By: obeaj <obeaj@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 16:01:16 by obeaj             #+#    #+#             */
-/*   Updated: 2023/02/15 22:32:25 by obeaj            ###   ########.fr       */
+/*   Updated: 2023/02/17 23:26:40 by obeaj            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,6 @@ namespace ft
             ~map()
             {
                 m_tree.clear();
-                m_tree.dealloc();
             };
 
             map& operator=(const map& x)
@@ -177,7 +176,7 @@ namespace ft
             
             pair<iterator,bool> insert (const value_type& val)
             {
-                iterator it = iterator(m_tree.search(val));
+                iterator it = iterator(m_tree.search(val.first));
                 if (it != end())
                     return ft::make_pair((it), true);
                 return ft::make_pair(iterator(m_tree.insert(val)), false);
@@ -209,10 +208,12 @@ namespace ft
 
             size_type erase (const key_type& k)
             {
-                iterator it = find(k);
-                m_tree.remove(*it);
-                if (it != end())
+                iterator it;
+                if ((it = find(k)) != end())
+                {  
+                    m_tree.remove(*it);
                     return 1;
+                }
                 return 0;
             };
 
@@ -262,38 +263,32 @@ namespace ft
             //ATTENTION: It is better if the search function takes key_type instead of value_type 
             iterator find (const key_type& k)
             {
-                value_type v = ft::make_pair(k, mapped_type());
-                return iterator(m_tree.search(v));
+                return iterator(m_tree.search(k));
             };
             
             const_iterator find (const key_type& k) const
             {
-                const value_type v = ft::make_pair(k, mapped_type());
-                return const_iterator(m_tree.search(v));
+                return const_iterator(m_tree.search(k));
             };
 
             iterator lower_bound (const key_type& k)
             {
-                value_type v = ft::make_pair(k, mapped_type());
-                return iterator(m_tree.lower_bound(v));
+                return iterator(m_tree.lower_bound(k));
             };
             
             const_iterator lower_bound (const key_type& k) const
             {
-                value_type v = ft::make_pair(k, mapped_type());
-                return const_iterator(m_tree.lower_bound(v));
+                return const_iterator(m_tree.lower_bound(k));
             };
             
             iterator upper_bound (const key_type& k)
             {
-                value_type v = ft::make_pair(k, mapped_type());
-                return iterator(m_tree.upper_bound(v));
+                return iterator(m_tree.upper_bound(k));
             };
             
             const_iterator upper_bound (const key_type& k) const
             {
-                value_type v = ft::make_pair(k, mapped_type());
-                return const_iterator(m_tree.upper_bound(v));
+                return const_iterator(m_tree.upper_bound(k));
             };
             
             size_type count (const key_type& k) const

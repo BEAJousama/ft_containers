@@ -6,7 +6,7 @@
 /*   By: obeaj <obeaj@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 18:18:52 by obeaj             #+#    #+#             */
-/*   Updated: 2023/02/17 18:19:47 by obeaj            ###   ########.fr       */
+/*   Updated: 2023/02/17 23:32:38 by obeaj            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,14 @@ namespace ft
 			avl_node(value_type val): value(val){};
     };
 
-    template <class T, class Compare, class Alloc, class Node = avl_node<T>, typename AllocNode = std::allocator<Node> > class AvlTree
+    template <class T, class Compare, class Alloc, class Node = avl_node<T> > 
+    class AvlTree
     {
         
         public:
             typedef T                                       value_type;
-            // typedef  value_type.first                       key_type;
-            // typedef  value_type.second                      mapped_type;
+            typedef typename value_type::first_type         key_type;
+            typedef typename value_type::second_type        mapped_type;
             typedef Compare                                 compare_type;
             typedef Alloc                                   alloc_type;
         
@@ -58,9 +59,10 @@ namespace ft
 			typedef typename alloc_type::difference_type    difference_type;
 			typedef typename alloc_type::size_type			size_type;
         
-        public:
+        private:
+            // typedef AllocNode                               alloc_node;
             typedef Node                                    node;
-            typedef AllocNode                               alloc_node;
+            typedef typename alloc_type::template rebind<node>::other alloc_node;
             typedef Node*                                   node_pointer;
             typedef const Node*                             const_node_pointer;
         
@@ -70,14 +72,12 @@ namespace ft
             typedef ft::reverse_iterator<iterator>                                      reverse_iterator;
             typedef ft::reverse_iterator<const_iterator>                                const_reverse_iterator;
             
-        public:
-            //ATTENTION : this should be private
+        private:
             node_pointer    _start;
             node_pointer    _root;
             alloc_node      av_alloc;
             compare_type    compare;
             size_type       _size;
-
 
         private:
 
@@ -141,7 +141,6 @@ namespace ft
                 y->left = x;
                 x->right = tmp;
 
-                std::cout << "-------------------------------------------------------------\n";
                 if (ptmp->left == x)
                     ptmp->left = y;
                 else if (ptmp != _start && ptmp->right == x)
@@ -174,18 +173,7 @@ namespace ft
                     destructNode(node->left);
                     destructNode(node->right);
 					av_alloc.destroy(node);
-                    // node->value.second = mapped_type();
-				}
-			};
-            
-			void    deallocateNode(node_pointer node)
-			{
-				if (node != nullptr)
-				{
-                    deallocateNode(node->left);
-                    deallocateNode(node->right);
-					av_alloc.deallocate(node, 1);
-                    node = nullptr;
+                    av_alloc.deallocate(node, 1);
 				}
 			};
 
@@ -240,6 +228,14 @@ namespace ft
             {
                 if (root == nullptr)
                     return root;
+                if (root->parent == _start && _size == 1)
+                {
+				    this->av_alloc.destroy(root);
+					this->av_alloc.deallocate(root, 1);
+					root = _start;    
+                    _size--;                
+                    return root;
+                }
 				else if (this->compare(todelete.first, root->value.first))
 					root->left = node_delete(root->left, todelete);
 				else if (this->compare(root->value.first, todelete.first))
@@ -250,6 +246,7 @@ namespace ft
 						this->av_alloc.destroy(root);
 						this->av_alloc.deallocate(root, 1);
 						root = nullptr;
+                        _size--;
 						return (root);
 					}
 					else if (root->left == nullptr)
@@ -260,6 +257,7 @@ namespace ft
 						this->av_alloc.destroy(temp);
 						this->av_alloc.deallocate(temp, 1);
 						temp = nullptr;
+                        _size--;
 						return (root);
 					}
 					else if (root->right == nullptr)
@@ -270,27 +268,28 @@ namespace ft
 						this->av_alloc.destroy(temp);
 						this->av_alloc.deallocate(temp, 1);
 						temp = nullptr;
+                        _size--;
 						return (root);
 					}
-					else{
+					else
+                    {
 						node_pointer	temp = _getSuccessor(root->right);
 						value_type p = temp->value;
 						root->right = node_delete(root->right , temp->value);
 						this->av_alloc.construct(root, p);
 					}
                 };
-
                 updateHeight(root);
                 return (balanceNode(root));
             };
 
-            node_pointer node_search(node_pointer root, value_type tofind) const
+            node_pointer node_search(node_pointer root, key_type tofind) const
             {
                 if (root == nullptr)
                     return _start;
-                else if (compare(tofind.first, root->value.first))
+                else if (compare(tofind, root->value.first))
                     return node_search(root->left, tofind);
-                else if (compare(root->value.first, tofind.first))
+                else if (compare(root->value.first, tofind))
                     return node_search(root->right, tofind);
                 else
                     return root;
@@ -305,11 +304,20 @@ namespace ft
                     root = root->left;
                 return root;
             };
-
-            node_pointer node_lower_bound(node_pointer root, value_type value)
+            
+            node_pointer node_max(node_pointer root)
             {
-                node_pointer nd = MinNode(root);
-                while (compare(nd->value.first , value.first))
+               if (root == nullptr)
+                    return _start;
+                while(root->right != nullptr)
+                    root = root->right;
+                return root;
+            }
+
+            node_pointer node_lower_bound(node_pointer root, key_t value)
+            {
+                node_pointer nd = node_min(root);
+                while (compare(nd->value.first , value))
                 {
                     nd = _getSuccessor(nd);
                     if (nd == _start)
@@ -320,37 +328,23 @@ namespace ft
                 return nd;
             };
 
-            node_pointer node_upper_bound(node_pointer root, value_type value)
+            node_pointer node_upper_bound(node_pointer root, key_type value)
             {
-                node_pointer nd = MinNode(root);
+                node_pointer nd = node_min(root);
                 
-                while (compare(nd->value.first , value.first))
+                while (compare(nd->value.first , value))
                 {
                     nd = _getSuccessor(nd);
                     if (nd == _start)
                     {
                         return nd;
                     }
-                    else if (nd->value.first == value.first)
+                    else if (nd->value.first == value)
                         return _getSuccessor(nd);
                 }
                 return nd;
             };
             
-
-            node_pointer MinNode(node_pointer nd)
-            {
-                while (nd != nullptr && nd->left != nullptr)
-                    nd = nd->left;
-                return nd;
-            }
-            
-            node_pointer MaxNode(node_pointer nd)
-            {
-                while (nd != nullptr && nd->right != nullptr)
-                    nd = nd->right;
-                return nd;
-            }
 
             node_pointer _getSuccessor(node_pointer nd)
             {
@@ -531,15 +525,15 @@ namespace ft
             
             void clear()
             {
-                destructNode(_root);
-                // dealloc();
-                _size = 0;
+				if (this->_root != this->_start)
+				{
+					destructNode(this->_root);
+					this->_size = 0;
+					this->_root = this->_start;
+					this->_start->left = nullptr;
+				}
             };
             
-            void dealloc()
-            {
-                deallocateNode(_root);
-            };
 
             void swap (AvlTree& x)
             {
@@ -565,17 +559,17 @@ namespace ft
 
         /*---------------------------------------------- Operations -------------------------------------------------*/
 
-            node_pointer search(value_type val) const
+            node_pointer search(key_type val) const
             {
                 return node_search(_root, val);
             };
 
-            node_pointer upper_bound(value_type val)
+            node_pointer upper_bound(key_type val)
             {
                 return node_upper_bound(_root, val);
             };
             
-            node_pointer lower_bound(value_type val)
+            node_pointer lower_bound(key_type val)
             {
                 return node_lower_bound(_root, val);
             };
