@@ -9,50 +9,65 @@
 int main()
 {
     // std::pair<int, int> v;
-    ft::AvlTree<ft::pair<int, int>, std::less<int>, std::allocator<std::pair<int, int> > > tree;
-    ft::pair<int, int> p1 = ft::make_pair(1, 100);
-    ft::pair<int, int> p2 = ft::make_pair(2, 120);
-    ft::pair<int, int> p3 = ft::make_pair(3, 130);
-    ft::pair<int, int> p4 = ft::make_pair(4, 140);
-    ft::pair<int, int> p5 = ft::make_pair(5, 150);
-    std::map<int, int> m;
+    // ft::AvlTree<ft::pair<int, int>, std::less<int>, std::allocator<std::pair<int, int> > > tree;
+    // ft::pair<int, int> p1 = ft::make_pair(1, 100);
+    // ft::pair<int, int> p2 = ft::make_pair(2, 120);
+    // ft::pair<int, int> p3 = ft::make_pair(3, 130);
+    // ft::pair<int, int> p4 = ft::make_pair(4, 140);
+    // ft::pair<int, int> p5 = ft::make_pair(5, 150);
+    // std::map<int, int> m;
     ft::map<int, int> map1;
     std::map<int, int> map2;
 
-    map1.insert(p1);
-    map1.insert(p2);
-    map1.insert(p3);
-    map1.insert(p4);
-    map1.insert(p5);
+    for (int i = 0; i < 500; i++)
+    {
+        map1.insert(ft::make_pair(i, i*2));
+    }
 
-    map2.insert(std::make_pair(1, 100));
-    map2.insert(std::make_pair(2, 120));
-    map2.insert(std::make_pair(3, 130));
-    map2.insert(std::make_pair(4, 140));
-    map2.insert(std::make_pair(5, 150));
+    for (int i = 0; i < 500; i++)
+    {
+        std::cout << map1[i] << std::endl;
+    }
 
-    std::cout << map1.erase(3) << std::endl;
-    std::cout << map2.erase(3) << std::endl;
-    std::cout << map2.upper_bound(3)->first << std::endl;
-    std::cout << map1.upper_bound(3)->first << std::endl;
-    std::cout << map2.equal_range(3).second->first << std::endl;
-    std::cout << map1.equal_range(3).second->first << std::endl;
+    for (int i = 0; i < 500; i++)
+    {
+        map1.erase(i);
+    }
+    map1.erase(1);
+    // map1.insert(p1);
+    // map1.insert(p2);
+    // map1.insert(p3);
+    // map1.insert(p4);
+    // map1.insert(p5);
+
+    // map2.insert(std::make_pair(1, 100));
+    // map2.insert(std::make_pair(2, 120));
+    // map2.insert(std::make_pair(3, 130));
+    // map2.insert(std::make_pair(4, 140));
+    // map2.insert(std::make_pair(5, 150));
+
+    // std::cout << map1.erase(3) << std::endl;
+    // std::cout << map2.erase(3) << std::endl;
+    // std::cout << map2.upper_bound(3)->first << std::endl;
+    // std::cout << map1.upper_bound(3)->first << std::endl;
+    // std::cout << map2.equal_range(3).second->first << std::endl;
+    // std::cout << map1.equal_range(3).second->first << std::endl;
     // std::cout << map2.count(4) << std::endl;
     // std::cout << map1.count(4) << std::endl;
-    m[5] = 1;
-    m[6] = 2;
-    m[7] = 3;
-    m[8] = 4;
-    m[9] = 5;
+    // m[5] = 1;
+    // m[6] = 2;
+    // m[7] = 3;
+    // m[8] = 4;
+    // m[9] = 5;
     // std::cout << m.erase(6) << std::endl;
     // std::cout << m.erase(7) << std::endl;
     // std::cout << m.erase(7) << std::endl;
     // std::cout << "main\n";
-    tree.insert(p1);
-    tree.insert(p2);
-    tree.insert(p3);
-    tree.insert(p4);
-    tree.insert(p5);
+    // tree.insert(p1);
+    // tree.insert(p2);
+    // tree.insert(p3);
+    // tree.insert(p4);
+    // tree.insert(p5);
 
     // std::cout << tree.size() << std::endl;
     // tree.clear();

@@ -6,7 +6,7 @@
 /*   By: obeaj <obeaj@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 16:01:16 by obeaj             #+#    #+#             */
-/*   Updated: 2023/02/13 17:54:47 by obeaj            ###   ########.fr       */
+/*   Updated: 2023/02/15 22:32:25 by obeaj            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ namespace ft
             
             bool empty() const
             {
-                m_tree.empty();
+                return (m_tree.empty());
             };
 
             size_type size() const

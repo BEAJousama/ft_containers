@@ -6,7 +6,7 @@
 /*   By: obeaj <obeaj@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 18:18:52 by obeaj             #+#    #+#             */
-/*   Updated: 2023/02/13 17:57:09 by obeaj            ###   ########.fr       */
+/*   Updated: 2023/02/15 22:23:03 by obeaj            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,9 @@
 #include "./utils.hpp"
 #include "./AvlIterator.hpp"
 #include <iostream>
+#include <stddef.h>
+#include <limits.h>
 
-#include <iostream>
 
 namespace ft
 {
@@ -242,46 +243,38 @@ namespace ft
 					root->right = node_delete(root->right, todelete);
                 else
                 {
-                    if (root->right == nullptr && root->left == nullptr)
-                    {
-                    	av_alloc.destroy(root);
-					    av_alloc.deallocate(root, 1);
-                        _size--;
-                        return nullptr;
-                    }
-                    else if (root->right == nullptr)
-                    {
-                        node_pointer tmp = root->parent;
-                        root->left->parent = root->parent;
-                        root->parent->left = root->left;
-                        av_alloc.destroy(root);
-					    av_alloc.deallocate(root, 1);
-                        _size--;
-                        return tmp->left;
-                    }
-                    else if(root->left == nullptr)
-                    {
-                        node_pointer tmp = root->parent;
-                        root->right->parent = root->parent;
-                        root->parent->right = root->right;
-                        av_alloc.destroy(root);
-					    av_alloc.deallocate(root, 1);
-                        _size--;
-                        return tmp->right;                        
-                    }
-                    else
-                    {
-                        //ATTENTION : Fonctionnement a assurer
-                        node_pointer tmpr = root->right;
-                        node_pointer tmpl = root->left;
-                        value_type tmp = _getSuccessor(root)->value;
-                        av_alloc.destroy(root);
-                        av_alloc.construct(root, tmp);
-                        root->left = tmpl;
-                        root->right = tmpr;
-                        // root->value = tmp;
-                        root->right = node_delete(root -> right, tmp);
-                    }
+					if (root->left == nullptr && root->right == nullptr){
+						this->av_alloc.destroy(root);
+						this->av_alloc.deallocate(root, 1);
+						root = nullptr;
+						return (root);
+					}
+					else if (root->left == nullptr)
+					{
+						node_pointer	temp = root;
+						root = root->right;
+						root->parent = temp->parent;
+						this->av_alloc.destroy(temp);
+						this->av_alloc.deallocate(temp, 1);
+						temp = nullptr;
+						return (root);
+					}
+					else if (root->right == nullptr)
+					{
+						node_pointer	temp = root;
+						root = root->left;
+						root->parent = temp->parent;
+						this->av_alloc.destroy(temp);
+						this->av_alloc.deallocate(temp, 1);
+						temp = nullptr;
+						return (root);
+					}
+					else{
+						node_pointer	temp = _getSuccessor(root->right);
+						value_type p = temp->value;
+						root->right = node_delete(root->right , temp->value);
+						this->av_alloc.construct(root, p);
+					}
                 };
 
                 updateHeight(root);
@@ -478,7 +471,8 @@ namespace ft
             
 			size_type	max_size()	const	
             { 
-                return (std::min<size_type>(std::numeric_limits<size_type>::max() / sizeof(node), std::numeric_limits<difference_type>::max())); 
+                // return (std::min<size_type>(std::numeric_limits<size_type>::max() / sizeof(node), std::numeric_limits<difference_type>::max())); 
+                av_alloc.max_size();
             };
 
         /*---------------------------------------------- Modifiers -------------------------------------------------*/
@@ -526,13 +520,13 @@ namespace ft
             
             void clear()
             {
-                destructNode(_start);
+                destructNode(_root);
                 _size = 0;
             };
             
             void dealloc()
             {
-                deallocateNode(_start);
+                deallocateNode(_root);
             };
 
             void swap (AvlTree& x)
