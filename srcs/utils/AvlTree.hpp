@@ -6,7 +6,7 @@
 /*   By: obeaj <obeaj@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 18:18:52 by obeaj             #+#    #+#             */
-/*   Updated: 2023/02/15 22:23:03 by obeaj            ###   ########.fr       */
+/*   Updated: 2023/02/17 18:19:47 by obeaj            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ namespace ft
         
         public:
             typedef T                                       value_type;
+            // typedef  value_type.first                       key_type;
+            // typedef  value_type.second                      mapped_type;
             typedef Compare                                 compare_type;
             typedef Alloc                                   alloc_type;
         
@@ -139,13 +141,13 @@ namespace ft
                 y->left = x;
                 x->right = tmp;
 
+                std::cout << "-------------------------------------------------------------\n";
                 if (ptmp->left == x)
                     ptmp->left = y;
                 else if (ptmp != _start && ptmp->right == x)
                     ptmp->right = y;
                 y->parent = x->parent;
                 x->parent = y;
-
                 if (tmp != nullptr)
                     tmp->parent = x;
                 updateHeight(x);
@@ -172,6 +174,7 @@ namespace ft
                     destructNode(node->left);
                     destructNode(node->right);
 					av_alloc.destroy(node);
+                    // node->value.second = mapped_type();
 				}
 			};
             
@@ -305,40 +308,50 @@ namespace ft
 
             node_pointer node_lower_bound(node_pointer root, value_type value)
             {
-                if (root == nullptr) return _start;
-                node_pointer found = node_search(root, value);
-                if (found != nullptr && found != _start)
-                    return (found);
-                else
+                node_pointer nd = MinNode(root);
+                while (compare(nd->value.first , value.first))
                 {
-                    if (compare(value.first, root->value.first) && !compare(value.first , _getPredecessor(root)->value.first))
-                        return root;
-                    else if (compare(root->value.first,value.first))
-                        return node_lower_bound(root->right, value);
-                    else if (compare(value.first, root->value.first))
-                        return node_lower_bound(root->left, value);
+                    nd = _getSuccessor(nd);
+                    if (nd == _start)
+                    {
+                        return nd;
+                    }
                 }
-                return _start;
+                return nd;
             };
-            //ATTENTION: fix upper bound : doesn't work when value is not found
+
             node_pointer node_upper_bound(node_pointer root, value_type value)
             {
-                if (root == nullptr) return _start;
-                node_pointer found = node_search(root, value);
-                if (found != root && found != _start)
-                    return (_getSuccessor(found));
-                else
+                node_pointer nd = MinNode(root);
+                
+                while (compare(nd->value.first , value.first))
                 {
-                    if (compare(root->value.first,value.first) && !compare(_getSuccessor(root)->value.first , value.first))
-                        return root;
-                    else if (compare(value.first, root->value.first))
-                        return node_upper_bound(root->left, value);
-                    else if (compare(root->value.first,value.first))
-                        return node_upper_bound(root->right, value);
+                    nd = _getSuccessor(nd);
+                    if (nd == _start)
+                    {
+                        return nd;
+                    }
+                    else if (nd->value.first == value.first)
+                        return _getSuccessor(nd);
                 }
-                return _start;
+                return nd;
             };
             
+
+            node_pointer MinNode(node_pointer nd)
+            {
+                while (nd != nullptr && nd->left != nullptr)
+                    nd = nd->left;
+                return nd;
+            }
+            
+            node_pointer MaxNode(node_pointer nd)
+            {
+                while (nd != nullptr && nd->right != nullptr)
+                    nd = nd->right;
+                return nd;
+            }
+
             node_pointer _getSuccessor(node_pointer nd)
             {
                 if (nd->right != nullptr)
@@ -452,8 +465,6 @@ namespace ft
             
             ~AvlTree()
             {
-                // this->clear();
-                // this->deallocateNode(_start);
             };
         
         /*---------------------------------------------- Capacity -------------------------------------------------*/
@@ -470,7 +481,7 @@ namespace ft
             };
             
 			size_type	max_size()	const	
-            { 
+            {
                 // return (std::min<size_type>(std::numeric_limits<size_type>::max() / sizeof(node), std::numeric_limits<difference_type>::max())); 
                 av_alloc.max_size();
             };
@@ -521,6 +532,7 @@ namespace ft
             void clear()
             {
                 destructNode(_root);
+                // dealloc();
                 _size = 0;
             };
             

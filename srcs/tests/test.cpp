@@ -10,33 +10,36 @@ int main()
 {
     // std::pair<int, int> v;
     // ft::AvlTree<ft::pair<int, int>, std::less<int>, std::allocator<std::pair<int, int> > > tree;
-    // ft::pair<int, int> p1 = ft::make_pair(1, 100);
-    // ft::pair<int, int> p2 = ft::make_pair(2, 120);
-    // ft::pair<int, int> p3 = ft::make_pair(3, 130);
-    // ft::pair<int, int> p4 = ft::make_pair(4, 140);
-    // ft::pair<int, int> p5 = ft::make_pair(5, 150);
+    ft::pair<int, int> p1 = ft::make_pair(1, 100);
+    ft::pair<int, int> p2 = ft::make_pair(2, 120);
+    ft::pair<int, int> p3 = ft::make_pair(3, 130);
+    ft::pair<int, int> p4 = ft::make_pair(4, 140);
+    ft::pair<int, int> p5 = ft::make_pair(5, 150);
     // std::map<int, int> m;
-    ft::map<int, int> map1;
-    std::map<int, int> map2;
+    ft::map<int, std::string> map1;
+    std::map<int, std::string> map2;
 
-    for (int i = 0; i < 500; i++)
+    for (int i = 0; i < 5; i++)
     {
-        map1.insert(ft::make_pair(i, i*2));
+        map2.insert(std::make_pair(i, "i*2"));
     }
 
-    for (int i = 0; i < 500; i++)
-    {
-        std::cout << map1[i] << std::endl;
-    }
+    // for (int i = 0; i < 5; i++)
+    // {
+    //     map1.erase(i);
+    // }
+    map2.clear();
 
-    for (int i = 0; i < 500; i++)
-    {
-        map1.erase(i);
-    }
-    map1.erase(1);
+    std::cout << map2[2] << std::endl;
+    std::cout << map2.size() << std::endl;
+    // for (int i = 0; i < 5; i++)
+    // {
+    //     map2.insert(std::make_pair(i, i*2));
+    // }
+
     // map1.insert(p1);
     // map1.insert(p2);
-    // map1.insert(p3);
+    // map1.insert(p5);
     // map1.insert(p4);
     // map1.insert(p5);
 
@@ -48,12 +51,12 @@ int main()
 
     // std::cout << map1.erase(3) << std::endl;
     // std::cout << map2.erase(3) << std::endl;
-    // std::cout << map2.upper_bound(3)->first << std::endl;
-    // std::cout << map1.upper_bound(3)->first << std::endl;
-    // std::cout << map2.equal_range(3).second->first << std::endl;
-    // std::cout << map1.equal_range(3).second->first << std::endl;
-    // std::cout << map2.count(4) << std::endl;
-    // std::cout << map1.count(4) << std::endl;
+    // std::cout << map1.lower_bound(3)->first << std::endl;
+    // std::cout << map2.lower_bound(3)->first << std::endl;
+    // std::cout << map2.equal_range(20).second->first << std::endl;
+    // std::cout << map1.equal_range(20).second->first << std::endl;
+    // std::cout << map2.count(22) << std::endl;
+    // std::cout << map1.count(22) << std::endl;
     // m[5] = 1;
     // m[6] = 2;
     // m[7] = 3;
