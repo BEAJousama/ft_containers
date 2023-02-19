@@ -6,7 +6,7 @@
 /*   By: obeaj <obeaj@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 10:41:25 by obeaj             #+#    #+#             */
-/*   Updated: 2023/02/06 16:33:05 by obeaj            ###   ########.fr       */
+/*   Updated: 2023/02/19 17:12:24 by obeaj            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 namespace ft
 {
     template <class T>
-    class random_access_iterator : ft::iterator_traits<T*>
+    class random_access_iterator : ft::iterator<ft::random_access_iterator_tag, T >
     {
         public:
             typedef          random_access_iterator                         self_type;

@@ -19,6 +19,10 @@ int main()
     ft::map<int, std::string> map1;
     std::map<int, std::string> map2;
 
+
+    // std::cout << it->first << std::endl;
+    // std::cout << it1->first << std::endl;
+
     // for (int i = 0; i < 5; i++)
     // {
     //     map1.insert(ft::make_pair(i, "i*2"));
@@ -50,14 +54,26 @@ int main()
     map1.insert(ft::make_pair(4, "140"));
     map1.insert(ft::make_pair(5, "150"));
 
-    std::cout << map1.erase(3) << std::endl;
-    std::cout << map2.erase(3) << std::endl;
-    std::cout << map1.lower_bound(3)->first << std::endl;
-    std::cout << map2.lower_bound(3)->first << std::endl;
-    std::cout << map2.equal_range(20).second->first << std::endl;
-    std::cout << map1.equal_range(20).second->first << std::endl;
-    std::cout << map2.count(1) << std::endl;
-    std::cout << map1.count(1) << std::endl;
+    ft::map <int, std::string>::iterator it = map1.begin();
+    ft::map <int, std::string>::reverse_iterator it1 = map1.rbegin();
+    while(it1 != map1.rend())
+    {
+        std::cout << it1->first << std::endl;
+        it1++;
+    }
+
+    ft::vector <std::string> v;
+    v.push_back("hello");
+    ft::reverse_iterator itt = v.rbegin();
+    std::cout << *itt << std::endl;
+    // std::cout << map1.erase(3) << std::endl;
+    // std::cout << map2.erase(3) << std::endl;
+    // std::cout << map1.lower_bound(3)->first << std::endl;
+    // std::cout << map2.lower_bound(3)->first << std::endl;
+    // std::cout << map2.equal_range(20).second->first << std::endl;
+    // std::cout << map1.equal_range(20).second->first << std::endl;
+    // std::cout << map2.count(1) << std::endl;
+    // std::cout << map1.count(1) << std::endl;
     // m[5] = 1;
     // m[6] = 2;
     // m[7] = 3;

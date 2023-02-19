@@ -6,7 +6,7 @@
 /*   By: obeaj <obeaj@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 18:18:52 by obeaj             #+#    #+#             */
-/*   Updated: 2023/02/17 23:32:38 by obeaj            ###   ########.fr       */
+/*   Updated: 2023/02/19 16:40:29 by obeaj            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,16 +61,16 @@ namespace ft
         
         private:
             // typedef AllocNode                               alloc_node;
-            typedef Node                                    node;
-            typedef typename alloc_type::template rebind<node>::other alloc_node;
-            typedef Node*                                   node_pointer;
-            typedef const Node*                             const_node_pointer;
+            typedef Node                                                node;
+            typedef typename alloc_type::template rebind<node>::other   alloc_node;
+            typedef Node*                                               node_pointer;
+            typedef const Node*                                         const_node_pointer;
         
         public:
-            typedef AvlIterator<value_type, node_pointer>                               iterator;
-            typedef AvlIterator<const value_type, const node_pointer>                   const_iterator;
-            typedef ft::reverse_iterator<iterator>                                      reverse_iterator;
-            typedef ft::reverse_iterator<const_iterator>                                const_reverse_iterator;
+            typedef AvlIterator<value_type, node_pointer>                iterator;
+            typedef AvlIterator<const value_type, node_pointer>          const_iterator;
+            typedef ft::reverse_iterator<iterator>                       reverse_iterator;
+            typedef ft::reverse_iterator<const_iterator>                 const_reverse_iterator;
             
         private:
             node_pointer    _start;

@@ -6,7 +6,7 @@
 /*   By: obeaj <obeaj@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 15:51:32 by obeaj             #+#    #+#             */
-/*   Updated: 2022/12/25 18:34:13 by obeaj            ###   ########.fr       */
+/*   Updated: 2023/02/19 17:09:35 by obeaj            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ namespace ft
     template <class Iterator>
     struct iterator_traits 
     {
-        typedef typename Iterator::iterator_category iterator_category;
+        // typedef typename Iterator::iterator_category iterator_category;
         typedef typename Iterator::value_type        value_type;
         typedef typename Iterator::difference_type   difference_type;
         typedef typename Iterator::pointer           pointer;
@@ -77,7 +77,8 @@ namespace ft
     /*------------------------------------- reverse_iterator ---------------------------------------*/
 
     template <class _Iterator> 
-    class reverse_iterator: public iterator<typename iterator_traits<_Iterator>::iterator_category,
+    class reverse_iterator: public iterator<
+                                            // typename iterator_traits<_Iterator>::iterator_category,
                                             typename iterator_traits<_Iterator>::value_type,
                                             typename iterator_traits<_Iterator>::difference_type,
                                             typename iterator_traits<_Iterator>::pointer,
@@ -87,10 +88,10 @@ namespace ft
             _Iterator __t;
         protected:
             _Iterator current;
-            typedef iterator_traits<_Iterator> traits_type;    
+            typedef iterator_traits<_Iterator> traits_type;
         public:
-            typedef          _Iterator                       iterator_type;
-            typedef typename traits_type::iterator_category iterator_category;
+            typedef          _Iterator                      iterator_type;
+            // typedef typename traits_type::iterator_category iterator_category;
             typedef typename traits_type::value_type        value_type;
             typedef typename traits_type::difference_type   difference_type;
             typedef typename traits_type::pointer           pointer;
@@ -154,9 +155,9 @@ namespace ft
                 return *this;
             };
             
-            reverse_iterator& operator++(int)
+            reverse_iterator operator++(int)
             {
-                reverse_iterator tmp(*this);
+                reverse_iterator tmp = *this;
                 current--;
                 return tmp;
             };
@@ -167,7 +168,7 @@ namespace ft
                 return *this;
             };
             
-            reverse_iterator& operator--(int)
+            reverse_iterator operator--(int)
             {
                 reverse_iterator tmp(*this);
                 current++;
