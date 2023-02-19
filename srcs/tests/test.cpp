@@ -64,7 +64,7 @@ int main()
 
     ft::vector <std::string> v;
     v.push_back("hello");
-    ft::reverse_iterator itt = v.rbegin();
+    ft::vector <std::string>::reverse_iterator itt = v.rbegin();
     std::cout << *itt << std::endl;
     // std::cout << map1.erase(3) << std::endl;
     // std::cout << map2.erase(3) << std::endl;

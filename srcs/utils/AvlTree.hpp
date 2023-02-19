@@ -6,7 +6,7 @@
 /*   By: obeaj <obeaj@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 18:18:52 by obeaj             #+#    #+#             */
-/*   Updated: 2023/02/19 16:40:29 by obeaj            ###   ########.fr       */
+/*   Updated: 2023/02/19 20:03:24 by obeaj            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -296,7 +296,7 @@ namespace ft
                 return nullptr;
             };
 
-            node_pointer node_min(node_pointer root)
+            node_pointer node_min(node_pointer root) const
             {
                 if (root == nullptr)
                     return _start;
@@ -314,7 +314,7 @@ namespace ft
                 return root;
             }
 
-            node_pointer node_lower_bound(node_pointer root, key_t value)
+            node_pointer node_lower_bound(node_pointer root, key_t value) const
             {
                 node_pointer nd = node_min(root);
                 while (compare(nd->value.first , value))
@@ -328,7 +328,7 @@ namespace ft
                 return nd;
             };
 
-            node_pointer node_upper_bound(node_pointer root, key_type value)
+            node_pointer node_upper_bound(node_pointer root, key_type value) const
             {
                 node_pointer nd = node_min(root);
                 
@@ -346,7 +346,7 @@ namespace ft
             };
             
 
-            node_pointer _getSuccessor(node_pointer nd)
+            node_pointer _getSuccessor(node_pointer nd) const
             {
                 if (nd->right != nullptr)
                 {
@@ -374,7 +374,7 @@ namespace ft
                 return nd;
             };
 
-            node_pointer _getPredecessor(node_pointer nd)
+            node_pointer _getPredecessor(node_pointer nd) const
             {
                 if (nd->left != nullptr)
                 {
@@ -477,7 +477,7 @@ namespace ft
 			size_type	max_size()	const	
             {
                 // return (std::min<size_type>(std::numeric_limits<size_type>::max() / sizeof(node), std::numeric_limits<difference_type>::max())); 
-                av_alloc.max_size();
+                return av_alloc.max_size();
             };
 
         /*---------------------------------------------- Modifiers -------------------------------------------------*/
@@ -564,12 +564,12 @@ namespace ft
                 return node_search(_root, val);
             };
 
-            node_pointer upper_bound(key_type val)
+            node_pointer upper_bound(key_type val) const
             {
                 return node_upper_bound(_root, val);
             };
             
-            node_pointer lower_bound(key_type val)
+            node_pointer lower_bound(key_type val) const
             {
                 return node_lower_bound(_root, val);
             };

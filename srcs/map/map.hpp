@@ -6,7 +6,7 @@
 /*   By: obeaj <obeaj@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 16:01:16 by obeaj             #+#    #+#             */
-/*   Updated: 2023/02/17 23:40:04 by obeaj            ###   ########.fr       */
+/*   Updated: 2023/02/19 20:16:59 by obeaj            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,8 +178,8 @@ namespace ft
             {
                 iterator it = iterator(m_tree.search(val.first));
                 if (it != end())
-                    return ft::make_pair((it), true);
-                return ft::make_pair(iterator(m_tree.insert(val)), false);
+                    return ft::make_pair((it), false);
+                return ft::make_pair(iterator(m_tree.insert(val)), true);
             };
 
             iterator insert (iterator position, const value_type& val)
@@ -189,7 +189,7 @@ namespace ft
                 {
                     return iterator(m_tree.insert(val, position.base()));
                 }
-                return insert(val).first;;                
+                return insert(val).first;           
             };
 
             template <class InputIterator>  void insert (InputIterator first, InputIterator last)
