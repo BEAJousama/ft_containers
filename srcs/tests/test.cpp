@@ -66,6 +66,10 @@ int main()
     v.push_back("hello");
     ft::vector <std::string>::reverse_iterator itt = v.rbegin();
     std::cout << *itt << std::endl;
+    ft::vector<int> hi(10,1);
+
+    for(auto bye : hi)
+        std::cout << bye << "my test\n";
     // std::cout << map1.erase(3) << std::endl;
     // std::cout << map2.erase(3) << std::endl;
     // std::cout << map1.lower_bound(3)->first << std::endl;

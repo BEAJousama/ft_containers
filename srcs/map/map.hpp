@@ -6,7 +6,7 @@
 /*   By: obeaj <obeaj@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 16:01:16 by obeaj             #+#    #+#             */
-/*   Updated: 2023/02/19 20:16:59 by obeaj            ###   ########.fr       */
+/*   Updated: 2023/02/19 23:46:41 by obeaj            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,19 +184,22 @@ namespace ft
 
             iterator insert (iterator position, const value_type& val)
             {
+                if (iterator it1 = find(val.first) != end())
+                    return it1;
                 iterator it = position;
                 if(m_comp(it->first, val.first) && m_comp(val.first,(it++)->first))
                 {
                     return iterator(m_tree.insert(val, position.base()));
                 }
-                return insert(val).first;           
+                return insert(val).first;
             };
 
             template <class InputIterator>  void insert (InputIterator first, InputIterator last)
             {
 				while (first != last)
 				{
-					m_tree.insert(*first);
+                    if (find(first->first) == end())
+					    m_tree.insert(*first);
 					first++;
 				};
             };
