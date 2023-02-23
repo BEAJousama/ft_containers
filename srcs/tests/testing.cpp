@@ -6,7 +6,7 @@
 /*   By: obeaj <obeaj@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 13:58:46 by obeaj             #+#    #+#             */
-/*   Updated: 2023/01/29 21:00:44 by obeaj            ###   ########.fr       */
+/*   Updated: 2023/02/23 12:16:42 by obeaj            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 # include <stack>
 # include <map>
 # include <algorithm>
-#include "srcs/vector/vector.hpp"
+#include "../vector/vector.hpp"
 
 int main(int argc, const char** argv) {
     (void)argc;
@@ -107,8 +107,10 @@ int main(int argc, const char** argv) {
     first.assign (7,100);             // 7 ints with a value of 100
 
     ft::vector<int>::iterator it;
-    it=first.begin() + 1;
+    
+    it = first.begin() + 1;
 
+    ft::vector<int>::iterator it33(it);
     second.assign (it,first.end() - 1); // the 5 central values of first
 
     int myints[] = {1776,7,4};

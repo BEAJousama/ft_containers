@@ -6,7 +6,7 @@
 /*   By: obeaj <obeaj@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 14:39:32 by obeaj             #+#    #+#             */
-/*   Updated: 2023/01/30 00:18:23 by obeaj            ###   ########.fr       */
+/*   Updated: 2023/02/23 12:08:59 by obeaj            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -305,7 +305,7 @@ namespace ft
 					pointer v_start_new = v_alloc.allocate(diff);
 					size_type v_size_new = v_size ;
 					this->~vector();
-					v_size = v_start_new;
+					v_size = v_size_new;
 					v_capacity = diff;
 					v_start = v_start_new;	
 				}

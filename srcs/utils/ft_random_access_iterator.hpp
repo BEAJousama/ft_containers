@@ -36,8 +36,8 @@ namespace ft
                 
 		random_access_iterator(const random_access_iterator<typename ft::remove_const<value_type>::type > & src) : m_ptr(&(*src)) {};
 
-		self_type & operator=(random_access_iterator<typename ft::remove_const<value_type>::type > & src) {
-			m_ptr = &(*src);
+		random_access_iterator &operator=(random_access_iterator<typename ft::remove_const<value_type>::type > const & src){
+			m_ptr = src.m_ptr;
 			return *this;
 		};
         
