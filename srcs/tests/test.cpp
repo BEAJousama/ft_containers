@@ -16,6 +16,7 @@ int main()
     ft::pair<int, std::string> p4 = ft::make_pair(4, "140");
     ft::pair<int, std::string> p5 = ft::make_pair(5, "150");
     // std::map<int, int> m;
+    ft::vector<int> vvv(5,10);
     ft::map<int, std::string> map1;
     std::map<int, std::string> map2;
 
@@ -55,7 +56,21 @@ int main()
     map1.insert(ft::make_pair(5, "150"));
 
     ft::map <int, std::string>::iterator it = map1.begin();
+    ft::map <int, std::string>::const_iterator it22 = map1.begin();
     ft::map <int, std::string>::reverse_iterator it1 = map1.rbegin();
+
+    std::map <int, std::string>::iterator it2 = map2.begin();
+
+    std::cout<< "\n\n\n" << it2->first << "\n\n\n\n" ;
+    (*it2).second = "hello";
+
+    std::cout<< "\n\n\n" << it2->second << "\n\n\n\n" ;
+    ft::vector<int>::const_iterator iv = vvv.begin();
+    ft::vector<int>::iterator ivv = vvv.begin();
+    iv = ivv;
+
+    ivv[1] = 5;
+    it22 = it;
     while(it1 != map1.rend())
     {
         std::cout << it1->first << std::endl;
@@ -68,8 +83,8 @@ int main()
     std::cout << *itt << std::endl;
     ft::vector<int> hi(10,1);
 
-    for(auto bye : hi)
-        std::cout << bye << "my test\n";
+    // for(auto bye : hi)
+    //     std::cout << bye << "my test\n";
     // std::cout << map1.erase(3) << std::endl;
     // std::cout << map2.erase(3) << std::endl;
     // std::cout << map1.lower_bound(3)->first << std::endl;
