@@ -6,7 +6,7 @@
 /*   By: obeaj <obeaj@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 18:18:52 by obeaj             #+#    #+#             */
-/*   Updated: 2023/02/19 20:03:24 by obeaj            ###   ########.fr       */
+/*   Updated: 2023/02/26 16:48:43 by obeaj            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include "./AvlIterator.hpp"
 #include <iostream>
 #include <stddef.h>
-#include <limits.h>
+#include <limits>
 
 
 namespace ft
@@ -30,7 +30,7 @@ namespace ft
             typedef T   value_type;
 
             value_type  value;
-            int         height;
+            size_t      height;
             avl_node*   parent;
             avl_node*   left;
             avl_node*   right;
@@ -476,8 +476,7 @@ namespace ft
             
 			size_type	max_size()	const	
             {
-                // return (std::min<size_type>(std::numeric_limits<size_type>::max() / sizeof(node), std::numeric_limits<difference_type>::max())); 
-                return av_alloc.max_size();
+                return av_alloc.max_size() ;
             };
 
         /*---------------------------------------------- Modifiers -------------------------------------------------*/
