@@ -6,7 +6,7 @@
 /*   By: obeaj <obeaj@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 16:01:16 by obeaj             #+#    #+#             */
-/*   Updated: 2023/02/19 23:46:41 by obeaj            ###   ########.fr       */
+/*   Updated: 2023/02/26 15:40:38 by obeaj            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,7 +184,8 @@ namespace ft
 
             iterator insert (iterator position, const value_type& val)
             {
-                if (iterator it1 = find(val.first) != end())
+                iterator it1;
+                if ((it1 = find(val.first)) != end())
                     return it1;
                 iterator it = position;
                 if(m_comp(it->first, val.first) && m_comp(val.first,(it++)->first))
