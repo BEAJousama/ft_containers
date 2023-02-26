@@ -6,7 +6,7 @@
 /*   By: obeaj <obeaj@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 14:39:32 by obeaj             #+#    #+#             */
-/*   Updated: 2023/02/23 12:08:59 by obeaj            ###   ########.fr       */
+/*   Updated: 2023/02/26 13:36:20 by obeaj            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -539,7 +539,7 @@ namespace ft
 				v_start = x.v_start;
 				v_alloc = x.v_alloc;
 				v_size = x.v_size;
-				v_capacity_tmp = x.v_capacity;
+				v_capacity = x.v_capacity;
 
 				x.v_alloc = v_alloc_tmp;
 				x.v_size = v_size_tmp;
