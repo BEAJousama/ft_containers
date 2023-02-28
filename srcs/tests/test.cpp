@@ -70,7 +70,6 @@ int main()
     (*it2).second = "hello";
 
     std::cout<< "\n\n\n" << it2->second << "\n\n\n\n" ;
-    std::reverse_iterator<it>
     ft::vector<int>::const_iterator iv = vvv.begin();
     ft::vector<int>::iterator ivv = vvv.begin();
     iv = ivv;
