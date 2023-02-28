@@ -42,7 +42,6 @@ int main()
     //     map1.insert(ft::make_pair(i, "i*2"));
     // }
 
-
     map2.insert(std::make_pair(1, "100"));
     map2.insert(std::make_pair(2, "120"));
     map2.insert(std::make_pair(3, "130"));
@@ -58,6 +57,12 @@ int main()
     ft::map <int, std::string>::iterator it = map1.begin();
     ft::map <int, std::string>::const_iterator it22 = map1.begin();
     ft::map <int, std::string>::reverse_iterator it1 = map1.rbegin();
+    ft::map <int, std::string>::reverse_iterator itr = map1.rend();
+
+    ft::vector <int>::reverse_iterator ittt = vvv.rbegin();
+    ft::vector <int>::reverse_iterator itttr = vvv.rend();
+
+    std::cout << (ittt < itttr) << std::endl;
 
     std::map <int, std::string>::iterator it2 = map2.begin();
 
@@ -65,6 +70,7 @@ int main()
     (*it2).second = "hello";
 
     std::cout<< "\n\n\n" << it2->second << "\n\n\n\n" ;
+    std::reverse_iterator<it>
     ft::vector<int>::const_iterator iv = vvv.begin();
     ft::vector<int>::iterator ivv = vvv.begin();
     iv = ivv;
