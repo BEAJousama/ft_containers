@@ -101,6 +101,8 @@
         "queue": "cpp",
         "__functional_base_03": "cpp",
         "*.def": "cpp",
-        "*.inc": "cpp"
+        "*.inc": "cpp",
+        "*.ipp": "cpp",
+        "version": "cpp"
     }
 }

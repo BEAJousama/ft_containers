@@ -6,7 +6,7 @@
 /*   By: obeaj <obeaj@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 16:01:16 by obeaj             #+#    #+#             */
-/*   Updated: 2023/02/26 19:13:39 by obeaj            ###   ########.fr       */
+/*   Updated: 2023/02/28 15:25:00 by obeaj            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,12 +223,15 @@ namespace ft
 
             void erase (iterator first, iterator last)
             {
+                iterator it = first;
                 while (first != last)
                 {
-                    m_tree.remove(*first);
-                    first++;
+                    it = ++first;
+                    first--;
+                    erase(first->first);
+                    first = it;
                 }
-            };    
+            };
             
             void swap (map& x)
             {

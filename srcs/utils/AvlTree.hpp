@@ -6,7 +6,7 @@
 /*   By: obeaj <obeaj@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 18:18:52 by obeaj             #+#    #+#             */
-/*   Updated: 2023/02/28 12:48:08 by obeaj            ###   ########.fr       */
+/*   Updated: 2023/02/28 13:56:50 by obeaj            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -273,7 +273,7 @@ namespace ft
 					}
 					else
                     {
-						node_pointer	temp = _getSuccessor(root->right);
+						node_pointer temp = _getSuccessor(root);
 						value_type p = temp->value;
 						root->right = node_delete(root->right , temp->value);
 						this->av_alloc.construct(root, p);

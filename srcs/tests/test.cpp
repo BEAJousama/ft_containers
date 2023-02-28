@@ -53,8 +53,13 @@ int main()
     map1.insert(ft::make_pair(3, "130"));
     map1.insert(ft::make_pair(4, "140"));
     map1.insert(ft::make_pair(5, "150"));
+    map1.insert(ft::make_pair(6, "160"));
+    map1.insert(ft::make_pair(7, "170"));
+    map1.insert(ft::make_pair(8, "180"));
+    map1.insert(ft::make_pair(9, "190"));
 
     ft::map <int, std::string>::iterator it = map1.begin();
+        ft::map <int, std::string>::iterator it11;
     ft::map <int, std::string>::const_iterator it22 = map1.begin();
     ft::map <int, std::string>::reverse_iterator it1 = map1.rbegin();
     ft::map <int, std::string>::reverse_iterator itr = map1.rend();
@@ -62,7 +67,45 @@ int main()
     ft::vector <int>::reverse_iterator ittt = vvv.rbegin();
     ft::vector <int>::reverse_iterator itttr = vvv.rend();
 
-    std::cout << (ittt < itttr) << std::endl;
+    map1.erase(2);
+
+    while(it != map1.end())
+    {
+        std::cout << it->first << " : " << it->second << "\n" ;
+        it++;
+    }
+
+    std::cout << "--------------------------------\n" << std::endl;
+    it11 = --map1.end();
+    it = map1.begin();
+    // it11--;
+    // std::cout << it11->first << " : " << it11->second << "\n" ;
+    // it++;
+    // it++;
+    // it++;
+    map1.erase(map1.begin(), --(--map1.end()));
+    while (it != map1.end())
+    {
+        std::cout << it->first << "\n" ;
+        it++;      
+    }
+    // std::cout << it->first << " : " << it->second << std::endl;
+    // std::cout << it11->first << " : " << it11->second << std::endl;
+    // map1.erase(map1.begin(), ++(++(++map1.begin())));
+    // while (it != it11)
+    // {
+    //     map1.erase(it);
+    //     it++;
+    // }
+    std::cout <<map1.size() << std::endl;
+    // it = map1.begin();
+
+    // while(it != map1.end())
+    // {
+    //     std::cout << it->first << " : " << it->second << "\n" ;
+    //     it++;
+    // }
+    // std::cout << (ittt < itttr) << std::endl;
 
     std::map <int, std::string>::iterator it2 = map2.begin();
 
