@@ -76,35 +76,45 @@ int main()
     }
 
     std::cout << "--------------------------------\n" << std::endl;
-    it11 = --map1.end();
-    it = map1.begin();
+    // it11 = --map1.end();
+    // it = map1.begin();
     // it11--;
     // std::cout << it11->first << " : " << it11->second << "\n" ;
     // it++;
     // it++;
     // it++;
-    map1.erase(map1.begin(), --(--map1.end()));
-    while (it != map1.end())
-    {
-        std::cout << it->first << "\n" ;
-        it++;      
-    }
+    map1.erase(0);
+    map1.erase(1);
+    map1.erase(2);
+    map1.erase(3);
+    map1.erase(4);
+    map1.erase(5);
+    map1.erase(6);
+    map1.erase(7);
+    map1.erase(8);
+    map1.erase(9);
+    std::cout << map1.begin()->first << std::endl;
+    map1.erase(map1.begin(), map1.end());
     // std::cout << it->first << " : " << it->second << std::endl;
-    // std::cout << it11->first << " : " << it11->second << std::endl;
+    std::cout << map1.begin()->first << std::endl;
     // map1.erase(map1.begin(), ++(++(++map1.begin())));
+    // map1.erase(8);
+    // map1.erase(9);
     // while (it != it11)
+    if(map1.begin() == map1.end())
+        std::cout << "################################\n" << std::endl;
     // {
     //     map1.erase(it);
     //     it++;
     // }
     std::cout <<map1.size() << std::endl;
-    // it = map1.begin();
+    it = map1.begin();
 
-    // while(it != map1.end())
-    // {
-    //     std::cout << it->first << " : " << it->second << "\n" ;
-    //     it++;
-    // }
+    while(it != map1.end())
+    {
+        std::cout << it->first << " : " << it->second << "\n" ;
+        it++;
+    }
     // std::cout << (ittt < itttr) << std::endl;
 
     std::map <int, std::string>::iterator it2 = map2.begin();
